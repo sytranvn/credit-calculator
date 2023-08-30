@@ -1,26 +1,28 @@
+import { CourseGroup, Course } from "$lib/types/course"
+
 /**
  * $$
  * A = \frac{\displaystyle\sum_{i = 1}^n{a_i \times n_i}}{\displaystyle\sum_{i=1}^n{n_i}}
  * $$
- * import Course from 'lib/types/course'
  * @param {Course[]} courses
  */
-function avg(courses) {
-	const result = courses.reduce((result, course) => {
+export function avg(courses) {
+	const result = courses.filter(c => c.score).reduce((result, course) => {
 		result.score = result.score + course.score * course.credit
 		result.credit = result.credit + course.credit
 		return result
 	}, { score: 0, credit: 0})
+	if (result.credit === 0) return 0;
 	return result.score / result.credit
 }
 
 /**
  * Convert 10.0 grading to 4.0 or ABCD grading
  * @param {number} score
- * @param {(4|'A'|'A+')} type
+ * @param {(4|'A'|'A+'|'G')} type
  * @returns {string|number}
  */
-function rating(score, type) {
+export function rating(score, type) {
 	if (type === 4) {
 		if (score < 5) return score /5;
 		return ((score - 5) / 5) + 1;
@@ -42,4 +44,18 @@ function rating(score, type) {
 
 	}
 	return score	
+}
+
+/**
+ * @param {Array<Course|CourseGroup>} courses
+ *
+ */
+export function graduate(courses) {
+	for(const course of courses) {
+		if (course instanceof CourseGroup) {
+			
+		}
+		if (course instanceof Course && course.required && course.score < 5) return false
+	}
+	return true;
 }

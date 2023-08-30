@@ -45,7 +45,6 @@
     credit: 2
     required: false
     group: DC
-
 - code: MTH00003
   name: "Vi tích phân 1B"
   credit: 3
@@ -131,7 +130,7 @@
     required: false
     group: DC
 - select: 6
-  course:
+  courses:
   - code: CHE00001
     name: "Hóa đại cương 1"
     credit: 3

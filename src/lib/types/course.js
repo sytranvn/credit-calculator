@@ -1,4 +1,4 @@
-const KNOWLEDGE_GROUP = Object.freeze({
+export const KNOWLEDGE_GROUP = Object.freeze({
 	DC: 'DC',
 	CN: Object.freeze({
 		CSN: 'CSN',
@@ -7,32 +7,65 @@ const KNOWLEDGE_GROUP = Object.freeze({
 	})
 })
 
-class Course {
+export const TOTAL_CREDIT_REQUIRED = 138
+
+export class Course {
 	/**
-	 * @type string	
+	 * @param {Object} obj
+	 * @param {string} obj.name
+	 * @param {string} obj.code
+	 * @param {KNOWLEDGE_GROUP} obj.group
+	 * @param {number} obj.credit
+	 * @param {boolean} obj.required
 	 */
-	code = ''
-	/**
-	 * @type string
-	 */
-	name = ''
-	/**
-	 * @type number
-	 */
-	credit = 1
-	/**
-	 * @type number
-	 */
-	score = 0
-	/**
-	* @type KNOWLEDGE_GROUP?
-	*/
-	group = null
-	/**
-	 * @type boolean
-	 */
-	required = false
+	constructor({ name, code, group, credit, required }) {
+		/**
+		 * @public
+		 * @type string	
+		 */
+		this.name = name
+		/**
+		 * @public
+		 * @type string	
+		 */
+		this.code = code
+		/**
+		 * @public
+		 * @type KNOWLEDGE_GROUP	
+		 */
+		this.group = group
+		/**
+		 * @public
+		 * @type number	
+		 */
+		this.credit = credit
+		/**
+		 * @public
+		 * @type boolean	
+		 */
+		this.required = required
+		/**
+		 * @public
+		 * @type number	
+		 */
+		this.score = 0
+	}
 }
 
+export class CourseGroup {
+	select = 0
+	/**
+	 * @type Course[]
+	 */
+	courses = []
 
-const TOTAL_CREDIT_REQUIRED = 138
+	/**
+	* @param {Object} obj
+	* @param {number} obj.select
+	* @param {Object[]} obj.courses
+	*/
+	constructor({select, courses}) {
+		this.select = select;
+		this.courses = courses.map(c => new Course(c))
+	}
+}
