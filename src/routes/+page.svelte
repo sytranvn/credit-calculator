@@ -1,47 +1,93 @@
 <script>
-	import welcome from "$lib/images/svelte-welcome.webp";
-	import welcome_fallback from "$lib/images/svelte-welcome.png";
 	import CourseRow from "$lib/components/CourseRow.svelte";
+	import { CourseGroup } from "$lib/types/course.js";
+	import { getIndexedDB, upsert as upsert } from "$lib/utils/db.js";
+	import { avg, graduate } from "$lib/utils/score.js";
 
 	export let data;
+	$: average = avg(
+		data.courses.flatMap((c) => (c.select ? c.courses : [c]))
+	);
+	async function saveScores() {
+		console.info("Saving scores");
+		const db = await getIndexedDB();
+		const transaction = db.transaction(["scores"], "readwrite");
+		transaction.oncomplete = () => console.log("Done");
+		const scoresStore = transaction.objectStore("scores");
+		data.courses.forEach((c) => {
+			if (c instanceof CourseGroup) {
+				c.courses.forEach((cc) => {
+					upsert(scoresStore, {
+						code: cc.code,
+						score: cc.score,
+					});
+				});
+			} else {
+				upsert(scoresStore, {
+					code: c.code,
+					score: c.score,
+				});
+			}
+		});
+	}
 </script>
 
 <svelte:head>
 	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<meta name="description" content="Credit calculator app" />
 </svelte:head>
 
 <section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
-
-		to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
+	<h1>Chào mừng bạn đến với ứng dụng tín số tín chỉ</h1>
+	<select name="school">
+		<option value="KHTN">KHTN</option>
+	</select>
+	<select name="specialization">
+		<option value="CNTT">CNTT</option>
+	</select>
 	<table>
-		{#each data.courses as course}
-			{#if course.select}
-				<tr>
-					<th scope="rowgroup">
-						Select {course.select}
-					</th></tr
-				>
-				{#each course.courses as optCourse}
-					<CourseRow course={optCourse} />
-				{/each}
-			{:else}
-				<CourseRow {course} />
-			{/if}
-		{/each}
+		<thead>
+			<tr>
+				<th>Mã học phần</th>
+				<th>Tên tên học phần</th>
+				<th>Số tín chỉ</th>
+				<th>Loại học phần</th>
+				<th>Điểm </th>
+			</tr>
+		</thead>
+		<tbody>
+			{#each data.courses as course}
+				{#if course.select}
+					<tr>
+						<th
+							scope="rowgroup"
+							colspan="4"
+						>
+							Chọn {course.select} tín
+							chỉ từ các học phần sau:
+						</th></tr
+					>
+					{#each course.courses as optCourse}
+						<CourseRow
+							bind:course={optCourse}
+						/>
+					{/each}
+				{:else}
+					<CourseRow
+						bind:course
+						on:change={saveScores}
+					/>
+				{/if}
+			{/each}
+		</tbody>
+		<tfoot>
+			<td colspan="4">Total:</td>
+			<td>{average.toFixed(2)}</td>
+		</tfoot>
 	</table>
+	{#if graduate(data.courses)}
+		<h2>Congratulation!!!!</h2>
+	{/if}
 </section>
 
 <style>
@@ -56,20 +102,7 @@
 	h1 {
 		width: 100%;
 	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
+	th[scope="rowgroup"] {
+		text-align: left;
 	}
 </style>
