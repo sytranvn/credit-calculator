@@ -48,18 +48,14 @@
 	 * @param {string} search
 	 */
 	function getDisplayCourses(courses, search) {
-		if (!search) return;
-		const reg = new RegExp(search);
-		return courses
-			?.filter(
+		if (!search) return new Set();
+		return new Set(
+			courses?.filter(
 				(c) =>
 					matchASCII(c.name, search) ||
 					c.code.includes(search)
 			)
-			.reduce((included, c) => {
-				included[c.code] = true;
-				return included;
-			}, {});
+		);
 	}
 </script>
 
@@ -120,11 +116,11 @@
 							last={index + 1 ===
 								course.courses
 									.length}
-							hidden={displayCourses &&
-								!displayCourses[
-									optCourse
-										.code
-								]}
+							hidden={displayCourses.size !==
+								0 &&
+								!displayCourses.has(
+									optCourse.code
+								)}
 							bind:course={optCourse}
 							on:change={saveScores}
 						/>
@@ -134,10 +130,11 @@
 						last={i + 1 ===
 							data.courses.length}
 						bind:course
-						hidden={displayCourses &&
-							!displayCourses[
+						hidden={displayCourses.size !==
+							0 &&
+							!displayCourses.has(
 								course.code
-							]}
+							)}
 						on:change={saveScores}
 					/>
 				{/if}
