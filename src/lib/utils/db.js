@@ -1,48 +1,136 @@
 import { version } from "$app/environment";
 
-export function getIndexedDB({ upgrade = schema } = {}) {
-	const request = indexedDB.open('creditdb', +version);
-	if (upgrade)
-		request.onupgradeneeded = upgrade;
-	return new Promise((resolve, reject) => {
-		const unlisten = () => {
-			request.removeEventListener('success', success)
-			request.removeEventListener('error', error)
-		}
-		const success = function(event) {
-			console.log("s")
-			resolve(event?.target?.result)
-			unlisten()
-		}
+export class Db {
+	/**
+	 * @type {Promise<IDBDatabase>}
+	 */
+	#db
+	/**
+	 * @static
+	 * @type {Db}
+	 */
+	static #instance
 
-		const error = function() {
-			reject("Cannot connect")
-			unlisten()
-		}
+	/**
+	 * @private
+	 */
+	constructor() {
+		const db = 'credit-calculator'
+		this.#db = this.getIndexedDB(db, +version)
+		Db.#instance = this
+	}
 
-		request.addEventListener('success', success)
-		request.addEventListener('error', error)
-	})
+	static get instance() {
+		if (!Db.#instance) {
+			return new Db()
+		}
+		return Db.#instance
+	}
+
+	async db() {
+		if (!await this.#db) return Promise.reject("Db not connected")
+		return await this.#db
+	}
+	/**
+	 * @param {string} db
+	 * @param {number} version
+	 */
+	getIndexedDB(db, version) {
+		const request = indexedDB.open(db, version);
+		request.onupgradeneeded = this.upgrade;
+		return new Promise((resolve, reject) => {
+			const unlisten = () => {
+				request.removeEventListener('success', success)
+				request.removeEventListener('error', error)
+			}
+			const success = function(event) {
+				resolve(event?.target?.result)
+				unlisten()
+			}
+
+			const error = function() {
+				reject("Cannot connect")
+				unlisten()
+			}
+
+			request.addEventListener('success', success)
+			request.addEventListener('error', error)
+		})
+	}
+	/**
+	 * @param {IDBVersionChangeEvent} event 
+	 */
+	upgrade(event) {
+		const db = event?.target?.result
+		return new Promise((resolve, reject) => {
+
+			db.onerror = () => {
+				console.error("Error loading db")
+				reject(false)
+			};
+			// store an objectStore for this database
+			const scoresStore = db.createObjectStore('scores', { keyPath: 'code' });
+			return resolve(true)
+		})
+	}
+
+	/**
+	 * @param {string} obj
+	 * @param {string} key 
+	 */
+	async getOne(obj, key) {
+		const db = await Db.instance.db()
+		return new Promise((resolve, reject) => {
+			const objStore = db.transaction(obj).objectStore(obj)
+			const _get = objStore.get(key)
+			_get.onsuccess = (event) => resolve(event.target.result)
+			_get.onerror = (event) => reject(event)
+
+		})
+	}
+
+	/**
+	* @param {string} obj
+	* @param {any} value
+	*/
+	async insert(obj, value) {
+		const db = await Db.instance.db();
+		const objStore = db.transaction([obj], "readwrite").objectStore(obj)
+		const add = objStore.add(value)
+		return this.promisedRequest(add)
+	}
+
+	/**
+	* @param {string} obj
+	* @param {any} value
+	*/
+	async update(obj, value) {
+		const db = await Db.instance.db();
+		const objStore = db.transaction([obj], "readwrite").objectStore(obj)
+		const put = objStore.put(value)
+		return this.promisedRequest(put)
+	}
+
+	/**
+	* @param {string} obj
+	*/
+	async all(obj) {
+		const db = await Db.instance.db();
+		const objStore = db.transaction(obj).objectStore(obj)
+		const all = objStore.getAll()
+		return this.promisedRequest(all)
+	}
+
+	/**
+	* @param {IDBRequest} request 
+	*/
+	promisedRequest(request) {
+		return new Promise((resolve, reject) => {
+			// @ts-ignore: next-line
+			request.onsuccess = event => resolve(event.target.result)
+			request.onerror = event => reject(event)
+		})
+	}
 }
 
-export function schema(event) {
-	const db = event.target.result
 
-	db.onerror = (_) => {
-		console.error("Error loading db")
-	};
-
-	// Create an objectStore for this database
-	const _objectStore = db.createObjectStore('scores', { keyPath: 'code' });
-
-	// Define what data items the objectStore will contain
-	// objectStore.createIndex('hours', 'hours', { unique: false });
-	// objectStore.createIndex('minutes', 'minutes', { unique: false });
-	// objectStore.createIndex('day', 'day', { unique: false });
-	// objectStore.createIndex('month', 'month', { unique: false });
-	// objectStore.createIndex('year', 'year', { unique: false });
-}
-
-export function upsert(store, val) {
-		store.put(val).onsuccess = () => console.log("updated")
-}
