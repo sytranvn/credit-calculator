@@ -1,12 +1,12 @@
 <script>
-	import { PUBLIC_DATA } from "$env/static/public";
+	import {} from "$env/static/public";
+	import { dev } from "$app/environment";
 	import CourseRow from "$lib/components/CourseRow.svelte";
 	import { Db } from "$lib/utils/db.js";
 	import { avg, graduate } from "$lib/utils/score.js";
 	import { matchASCII } from "$lib/utils/searching.js";
 	import { onMount } from "svelte";
 
-	const sample = PUBLIC_DATA === "sample";
 	export let data;
 	/** @type Db */
 	let db;
@@ -78,7 +78,7 @@
 	<table>
 		<thead>
 			<tr>
-				{#if sample}
+				{#if dev}
 					<th>Code</th>
 					<th>Name</th>
 					<th>Cre</th>
@@ -101,7 +101,7 @@
 							scope="rowgroup"
 							colspan="4"
 						>
-							{#if sample}
+							{#if dev}
 								Select {course.select}
 								of following
 							{:else}
