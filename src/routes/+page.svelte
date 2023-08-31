@@ -1,34 +1,65 @@
 <script>
+	import { PUBLIC_DATA } from "$env/static/public";
 	import CourseRow from "$lib/components/CourseRow.svelte";
-	import { CourseGroup } from "$lib/types/course.js";
-	import { getIndexedDB, upsert as upsert } from "$lib/utils/db.js";
+	import { Db } from "$lib/utils/db.js";
 	import { avg, graduate } from "$lib/utils/score.js";
+	import { matchASCII } from "$lib/utils/searching.js";
+	import { onMount } from "svelte";
 
+	const sample = PUBLIC_DATA === "sample";
 	export let data;
-	$: average = avg(
-		data.courses.flatMap((c) => (c.select ? c.courses : [c]))
+	/** @type Db */
+	let db;
+	let search = "";
+	$: flatCourses = data.courses.flatMap((c) =>
+		c.select ? c.courses : [c]
 	);
-	async function saveScores() {
-		console.info("Saving scores");
-		const db = await getIndexedDB();
-		const transaction = db.transaction(["scores"], "readwrite");
-		transaction.oncomplete = () => console.log("Done");
-		const scoresStore = transaction.objectStore("scores");
-		data.courses.forEach((c) => {
-			if (c instanceof CourseGroup) {
-				c.courses.forEach((cc) => {
-					upsert(scoresStore, {
-						code: cc.code,
-						score: cc.score,
-					});
-				});
+	$: average = avg(flatCourses);
+	$: result = graduate(data.courses);
+	$: displayCourses = getDisplayCourses(flatCourses, search);
+
+	onMount(async () => {
+		db = Db.instance;
+		for await (const c of data.courses) {
+			if (!c.select) {
+				await getScore(c);
 			} else {
-				upsert(scoresStore, {
-					code: c.code,
-					score: c.score,
-				});
+				for await (const cc of c.courses) {
+					await getScore(cc);
+				}
 			}
+		}
+		data.courses = data.courses;
+	});
+	async function saveScores(e) {
+		db.update("scores", {
+			code: e.detail.value.code,
+			score: e.detail.value.score,
 		});
+	}
+	async function getScore(c) {
+		const score = await Db.instance.getOne("scores", c.code);
+		c.score = score?.score;
+	}
+
+	/**
+	 * @typedef {import('$lib/types/course.js').Course} Course
+	 * @param {Course[]} courses
+	 * @param {string} search
+	 */
+	function getDisplayCourses(courses, search) {
+		if (!search) return;
+		const reg = new RegExp(search);
+		return courses
+			?.filter(
+				(c) =>
+					matchASCII(c.name, search) ||
+					c.code.includes(search)
+			)
+			.reduce((included, c) => {
+				included[c.code] = true;
+				return included;
+			}, {});
 	}
 </script>
 
@@ -38,56 +69,87 @@
 </svelte:head>
 
 <section>
-	<h1>Chào mừng bạn đến với ứng dụng tín số tín chỉ</h1>
+	<h1>{data.message}</h1>
+	<!--
 	<select name="school">
 		<option value="KHTN">KHTN</option>
 	</select>
 	<select name="specialization">
 		<option value="CNTT">CNTT</option>
 	</select>
+	-->
+	<input type="text" bind:value={search} placeholder="search" />
 	<table>
 		<thead>
 			<tr>
-				<th>Mã học phần</th>
-				<th>Tên tên học phần</th>
-				<th>Số tín chỉ</th>
-				<th>Loại học phần</th>
-				<th>Điểm </th>
+				{#if sample}
+					<th>Code</th>
+					<th>Name</th>
+					<th>Cre</th>
+					<th>Required</th>
+					<th>Score</th>
+				{:else}
+					<th>Mã học phần</th>
+					<th>Tên tên học phần</th>
+					<th>Số tín chỉ</th>
+					<th>Loại học phần</th>
+					<th>Điểm </th>
+				{/if}
 			</tr>
 		</thead>
 		<tbody>
-			{#each data.courses as course}
+			{#each data.courses as course, i}
 				{#if course.select}
 					<tr>
 						<th
 							scope="rowgroup"
 							colspan="4"
 						>
-							Chọn {course.select} tín
-							chỉ từ các học phần sau:
+							{#if sample}
+								Select {course.select}
+								of following
+							{:else}
+								Chọn {course.select}
+								tín chỉ từ các học
+								phần sau:
+							{/if}
 						</th></tr
 					>
-					{#each course.courses as optCourse}
+					{#each course.courses as optCourse, index}
 						<CourseRow
+							last={index + 1 ===
+								course.courses
+									.length}
+							hidden={displayCourses &&
+								!displayCourses[
+									optCourse
+										.code
+								]}
 							bind:course={optCourse}
+							on:change={saveScores}
 						/>
 					{/each}
 				{:else}
 					<CourseRow
+						last={i + 1 ===
+							data.courses.length}
 						bind:course
+						hidden={displayCourses &&
+							!displayCourses[
+								course.code
+							]}
 						on:change={saveScores}
 					/>
 				{/if}
 			{/each}
 		</tbody>
 		<tfoot>
-			<td colspan="4">Total:</td>
-			<td>{average.toFixed(2)}</td>
+			<th colspan="2">Total:</th>
+			<th colspan="2">{result.credit}</th>
+			<th>{average.toFixed(2)}</th>
 		</tfoot>
 	</table>
-	{#if graduate(data.courses)}
-		<h2>Congratulation!!!!</h2>
-	{/if}
+	<h2>{result.msg}</h2>
 </section>
 
 <style>
@@ -103,6 +165,12 @@
 		width: 100%;
 	}
 	th[scope="rowgroup"] {
+		text-align: left;
+	}
+	table {
+		border-collapse: collapse;
+	}
+	tfoot > :first-child {
 		text-align: left;
 	}
 </style>

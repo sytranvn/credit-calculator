@@ -1,4 +1,4 @@
-import { CourseGroup, Course } from "$lib/types/course"
+import { CourseGroup, Course, TOTAL_CREDIT_REQUIRED } from "$lib/types/course"
 
 /**
  * $$
@@ -11,7 +11,7 @@ export function avg(courses) {
 		result.score = result.score + course.score * course.credit
 		result.credit = result.credit + course.credit
 		return result
-	}, { score: 0, credit: 0})
+	}, { score: 0, credit: 0 })
 	if (result.credit === 0) return 0;
 	return result.score / result.credit
 }
@@ -24,14 +24,14 @@ export function avg(courses) {
  */
 export function rating(score, type) {
 	if (type === 4) {
-		if (score < 5) return score /5;
+		if (score < 5) return score / 5;
 		return ((score - 5) / 5) + 1;
 	}
 	if (type === 'A') {
-		if (score >=8) return 'A';
-		if (score >=6.5) return 'B';
-		if (score >=5) return 'C';
-		if (score >=4) return 'D';
+		if (score >= 8) return 'A';
+		if (score >= 6.5) return 'B';
+		if (score >= 5) return 'C';
+		if (score >= 4) return 'D';
 		return 'F';
 	}
 	if (type === 'A+') {
@@ -43,7 +43,16 @@ export function rating(score, type) {
 		return 'F';
 
 	}
-	return score	
+	return score
+}
+
+/**
+ * @param {CourseGroup} group
+ */
+function graduateCourseGroup(group) {
+	const { select, courses } = group
+	const credit = courses.filter(course => course.score && course.score > 5).reduce((sum, c) => sum + c.credit, 0)
+	return { passed: credit >= select, credit }
 }
 
 /**
@@ -51,11 +60,31 @@ export function rating(score, type) {
  *
  */
 export function graduate(courses) {
-	for(const course of courses) {
+	let ttCredit = 0
+	let allPassed = true;
+	let msg = "Congratulation!!";
+	for (const course of courses) {
 		if (course instanceof CourseGroup) {
-			
+			const { credit, passed } = graduateCourseGroup(course)
+			if (!passed) {
+				allPassed = false;
+				msg = "Not enough optional credit"
+			}
+			ttCredit += credit
+		} else {
+			if (course.required && course.score && course.score < 5) {
+				msg = `Course ${course.name} is required`
+			}
+			if (course.score && course.score > 5) {
+				ttCredit += course.credit
+			} else {
+				allPassed = false;
+				msg = "Not enough credit"
+			}
 		}
-		if (course instanceof Course && course.required && course.score < 5) return false
 	}
-	return true;
+	if (allPassed) {
+		allPassed = ttCredit >= TOTAL_CREDIT_REQUIRED;
+	}
+	return { pass: allPassed, credit: ttCredit, msg }
 }
