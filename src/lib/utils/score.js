@@ -75,7 +75,7 @@ export function graduate(courses) {
 			if (course.required && course.score && course.score < 5) {
 				msg = `Course ${course.name} is required`
 			}
-			if (course.score && course.score > 5) {
+			if (course.score && course.score >= 5) {
 				ttCredit += course.credit
 			} else {
 				allPassed = false;
