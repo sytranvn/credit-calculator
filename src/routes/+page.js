@@ -3,13 +3,12 @@ import sampleCourses from '$lib/data/sample.yaml?raw'
 import rawCourses from '$lib/data/daihoc.yaml?raw'
 import { Course, CourseGroup } from '$lib/types/course';
 import { dev } from '$app/environment';
-import * as x from '@sveltejs/adapter-static'
 
 export const prerender = true;
 
 export async function load() {
 	const data = yaml.parse(dev ? sampleCourses : rawCourses)
-	const message =  dev ? 'Welcome' : 'Chào mừng bạn đến với ứng dụng tín điểm học phần'
+	const message = dev ? 'Welcome' : 'Chào mừng bạn đến với ứng dụng tín điểm học phần'
 	const courses = data.map(d => {
 		if (d.select) {
 			return new CourseGroup(d);

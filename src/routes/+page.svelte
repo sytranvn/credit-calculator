@@ -6,6 +6,7 @@
 	import { avg, graduate } from "$lib/utils/score.js";
 	import { matchASCII } from "$lib/utils/searching.js";
 	import { onMount } from "svelte";
+	import { initialize } from "$lib/utils/firebase.js";
 
 	export let data;
 	/** @type Db */
@@ -30,6 +31,9 @@
 			}
 		}
 		data.courses = data.courses;
+		if (!dev) {
+			initialize();
+		}
 	});
 	async function saveScores(e) {
 		db.update("scores", {
