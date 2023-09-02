@@ -9,7 +9,7 @@
 <header>
 	<div class="corner">
 		<a href="https://sytranvn.dev">
-			<img src="/favicon.png" alt="SvelteKit" />
+			<img src={`${base}/favicon.png`} alt="SvelteKit" />
 		</a>
 	</div>
 
