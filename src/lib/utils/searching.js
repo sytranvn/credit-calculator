@@ -2,7 +2,7 @@
 * @param {string} str 
 */
 function stringToASCII(str) {
-    return str.replace(/[àáảãạâầấẩẫậăằắẳẵặ]/g, 'a')
+    return str.toLowerCase().replace(/[àáảãạâầấẩẫậăằắẳẵặ]/g, 'a')
       .replace(/[èéẻẽẹêềếểễệ]/g, 'e')
       .replace(/[đ]/g, 'd')
       .replace(/[ìíỉĩị]/g, 'i')
