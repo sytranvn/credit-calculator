@@ -31,8 +31,8 @@ pages = await Promise.all(pages
 
 export default defineConfig(({ mode }) => {
 	const env = loadEnv(mode, process.cwd(), '')
-	const BASE_URL = env.BASE_URL
-	const DOMAIN = "https://sytranvn.dev"
+	const BASE_URL = env.BASE_URL || ''
+	const DOMAIN = env.DOMAIN || ''
 	const BASE_LINK = `${DOMAIN}${BASE_URL}`
 
 	return {

@@ -65,11 +65,13 @@ export class Db {
 		return new Promise((resolve, reject) => {
 
 			db.onerror = () => {
-				console.error("Error loading db")
+				console.warn("Error loading db")
 				reject(false)
 			};
-			// store an objectStore for this database
-			const scoresStore = db.createObjectStore('scores', { keyPath: 'code' });
+			if (!db.objectStoreNames.contains('scores')) {
+				// store an objectStore for this database
+				const scoresStore = db.createObjectStore('scores', { keyPath: 'code' });
+			}
 			return resolve(true)
 		})
 	}
