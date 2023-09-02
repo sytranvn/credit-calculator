@@ -7,6 +7,7 @@
 	export let course;
 	export let last = false;
 	export let hidden = false;
+	$: error = course.score && (course.score < 0 || course.score > 10);
 	const dispatch = createEventDispatcher();
 	function change() {
 		dispatch("change", { value: course });
@@ -24,6 +25,7 @@
 	{/if}
 	<td class:last>
 		<input
+			class:error
 			type="number"
 			bind:value={course.score}
 			min="0"
@@ -39,5 +41,8 @@
 	}
 	.hidden {
 		display: none;
+	}
+	.error {
+		border: 1px solid red;
 	}
 </style>
