@@ -1,5 +1,4 @@
 <script>
-	import {} from "$env/static/public";
 	import { dev } from "$app/environment";
 	import CourseRow from "$lib/components/CourseRow.svelte";
 	import { Db } from "$lib/utils/db.js";
@@ -52,14 +51,17 @@
 	 * @param {string} search
 	 */
 	function getDisplayCourses(courses, search) {
-		if (!search) return new Set();
-		return new Set(
-			courses?.filter(
-				(c) =>
-					matchASCII(c.name, search) ||
-					c.code.includes(search)
-			)
+		if (!search) return new Set(courses.map((c) => c.code));
+		const codes = new Set(
+			courses
+				?.filter(
+					(c) =>
+						matchASCII(c.name, search) ||
+						c.code.includes(search)
+				)
+				.map((c) => c.code)
 		);
+		return codes;
 	}
 </script>
 
@@ -100,7 +102,14 @@
 		<tbody>
 			{#each data.courses as course, i}
 				{#if course.select}
-					<tr>
+					<tr
+						class:hidden={!course.courses.every(
+							(c) =>
+								displayCourses.has(
+									c.code
+								)
+						)}
+					>
 						<th
 							scope="rowgroup"
 							colspan="4"
@@ -120,11 +129,9 @@
 							last={index + 1 ===
 								course.courses
 									.length}
-							hidden={displayCourses.size !==
-								0 &&
-								!displayCourses.has(
-									optCourse.code
-								)}
+							hidden={!displayCourses.has(
+								optCourse.code
+							)}
 							bind:course={optCourse}
 							on:change={saveScores}
 						/>
@@ -134,23 +141,29 @@
 						last={i + 1 ===
 							data.courses.length}
 						bind:course
-						hidden={displayCourses.size !==
-							0 &&
-							!displayCourses.has(
-								course.code
-							)}
+						hidden={!displayCourses.has(
+							course.code
+						)}
 						on:change={saveScores}
 					/>
 				{/if}
 			{/each}
+			{#if !displayCourses.size}
+				<tr>
+					<td colspan="5"
+						>Không tìm thấy học phần</td
+					>
+				</tr>
+			{/if}
 		</tbody>
 		<tfoot>
-			<th colspan="2">Total:</th>
-			<th colspan="2">{result.credit}</th>
+			<th>Total:</th>
+			<th>{result.msg}</th>
+			<th>{result.credit}</th>
+			<th />
 			<th>{average.toFixed(2)}</th>
 		</tfoot>
 	</table>
-	<h2>{result.msg}</h2>
 </section>
 
 <style>
@@ -158,7 +171,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		align-items: center;
+		align-items: stretch;
 		flex: 0.6;
 	}
 
@@ -171,7 +184,34 @@
 	table {
 		border-collapse: collapse;
 	}
-	tfoot > :first-child {
+	tfoot th {
 		text-align: left;
+	}
+
+	input {
+		border-collapse: collapse;
+		/* color-scheme: dark; */
+		--sk-text-1: black;
+		--sk-back-2: white;
+		--sk-back-3: grey;
+
+		box-sizing: inherit;
+		-webkit-tap-highlight-color: hsla(var(--sk-theme-1-hsl), 0.1);
+		margin: 0;
+		transition-property: background, background-color,
+			background-image, border;
+		border: none;
+		border-bottom: 1px solid var(--sk-back-3);
+		background: var(--sk-back-2);
+		color: var(--sk-text-1);
+		flex-shrink: 0;
+		padding: 1rem 1rem 0.5rem 1rem;
+		font-family: inherit;
+		font-size: 1rem;
+		pointer-events: all;
+		margin-bottom: 1rem;
+	}
+	.hidden {
+		display: none;
 	}
 </style>
