@@ -62,11 +62,11 @@ function graduateCourseGroup(group) {
 export function graduate(courses) {
 	let ttCredit = 0
 	let allPassed = true;
-	let msg = "Congratulation!!";
+	let msg; 
 	for (const course of courses) {
 		if (course instanceof Course) {
 			if (course.required && course.score && course.score < 5) {
-				msg = `Học phần ${course.name} là môn bắt buộc`
+				msg = msg || `Học phần ${course.name} là môn bắt buộc`
 			}
 			if (course.score && course.score >= 5) {
 				ttCredit += course.credit
@@ -75,14 +75,14 @@ export function graduate(courses) {
 			const { credit, passed } = graduateCourseGroup(course)
 			if (!passed) {
 				allPassed = false;
-				msg = `Bạn chưa tích lũy đủ tín chỉ môn tự chọn`
+				msg = msg || `Bạn chưa tích lũy đủ tín chỉ môn tự chọn`
 			}
 			ttCredit += credit
 		}
 	}
-	if (allPassed) {
-		allPassed = ttCredit >= TOTAL_CREDIT_REQUIRED;
-		if (!allPassed) msg = `Bạn chưa tích lũy đủ ${TOTAL_CREDIT_REQUIRED} tín chỉ`
-	}
+	if (ttCredit >= TOTAL_CREDIT_REQUIRED) msg = `Bạn chưa tích lũy đủ ${TOTAL_CREDIT_REQUIRED} tín chỉ`
+	allPassed = allPassed && ttCredit >= TOTAL_CREDIT_REQUIRED;
+
+	if (allPassed) msg = "Congratulation!!";
 	return { pass: allPassed, credit: ttCredit, msg }
 }
