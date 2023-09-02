@@ -65,7 +65,7 @@ export function graduate(courses) {
 	let msg; 
 	for (const course of courses) {
 		if (course instanceof Course) {
-			if (course.required && course.score && course.score < 5) {
+			if (course.required && (!course.score || course.score < 5)) {
 				msg = msg || `Học phần ${course.name} là môn bắt buộc`
 			}
 			if (course.score && course.score >= 5) {
