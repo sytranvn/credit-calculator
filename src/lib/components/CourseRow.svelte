@@ -15,6 +15,7 @@
 </script>
 
 <tr class:last class:hidden>
+	<td />
 	<td class:last>{course.code}</td>
 	<td class:last>{course.name}</td>
 	<td class:last>{course.credit}</td>

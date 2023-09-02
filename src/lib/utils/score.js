@@ -1,4 +1,4 @@
-import { CourseGroup, Course, TOTAL_CREDIT_REQUIRED } from "$lib/types/course"
+import { Course, TOTAL_CREDIT_REQUIRED } from "$lib/types/course"
 
 /**
  * $$
@@ -47,7 +47,7 @@ export function rating(score, type) {
 }
 
 /**
- * @param {CourseGroup} group
+ * @param {OptionalGroup} group
  */
 function graduateCourseGroup(group) {
 	const { select, courses } = group
@@ -56,7 +56,7 @@ function graduateCourseGroup(group) {
 }
 
 /**
- * @param {Array<Course|CourseGroup>} courses
+ * @param {Array<Course|OptionalGroup>} courses
  *
  */
 export function graduate(courses) {

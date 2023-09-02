@@ -52,20 +52,15 @@ export class Course {
 	}
 }
 
-export class CourseGroup {
-	select = 0
+export class Group {
 	/**
-	 * @type Course[]
-	 */
-	courses = []
-
-	/**
-	* @param {Object} obj
-	* @param {number} obj.select
-	* @param {Object[]} obj.courses
+	* @param {Course[]} courses
+	* @param {string} name 
+	* @param {number} [select=0]
 	*/
-	constructor({select, courses}) {
+	constructor(name, courses, select = 0) {
+		this.name = name;
+		this.courses = courses;
 		this.select = select;
-		this.courses = courses.map(c => new Course(c))
 	}
 }

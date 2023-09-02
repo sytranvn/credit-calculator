@@ -1,22 +1,24 @@
-- code: BAA00101
-  name: "Hello world"
-  credit: 3
-  required: true
-  group: DC
-- select: 4
+- groupname: All
   courses:
-  - code: BAA00102
-    name: "Hello world 2"
+  - code: BAA00101
+    name: "Hello world"
     credit: 3
     required: true
     group: DC
-  - code: BAA00103
-    name: "Hello world 3"
-    credit: 3
-    required: true
-    group: DC
-  - code: BAA00104
-    name: "Hello world 4"
-    credit: 3
-    required: true
-    group: DC
+  - select: 4
+    courses:
+    - code: BAA00102
+      name: "Hello world 2"
+      credit: 3
+      required: true
+      group: DC
+    - code: BAA00103
+      name: "Hello world 3"
+      credit: 3
+      required: true
+      group: DC
+    - code: BAA00104
+      name: "Hello world 4"
+      credit: 3
+      required: true
+      group: DC

@@ -11,16 +11,16 @@
 	/** @type Db */
 	let db;
 	let search = "";
-	$: flatCourses = data.courses.flatMap((c) =>
-		c.select ? c.courses : [c]
+	$: flatCourses = data.groups.flatMap((g) =>
+		g.courses.flatMap((c) => (c.select ? c.courses : [c]))
 	);
 	$: average = avg(flatCourses);
-	$: result = graduate(data.courses);
+	$: result = graduate(data.groups);
 	$: displayCourses = getDisplayCourses(flatCourses, search);
 
 	onMount(async () => {
 		db = Db.instance;
-		for await (const c of data.courses) {
+		for await (const c of data.groups.courses) {
 			if (!c.select) {
 				await getScore(c);
 			} else {
@@ -29,7 +29,7 @@
 				}
 			}
 		}
-		data.courses = data.courses;
+		data.groups.courses = data.groups.courses;
 		if (!dev) {
 			initialize();
 		}
@@ -85,12 +85,14 @@
 		<thead>
 			<tr>
 				{#if dev}
+					<th />
 					<th>Code</th>
 					<th>Name</th>
 					<th>Cre</th>
 					<th>Required</th>
 					<th>Score</th>
 				{:else}
+					<th />
 					<th>Mã học phần</th>
 					<th>Tên tên học phần</th>
 					<th>Số tín chỉ</th>
@@ -100,53 +102,57 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each data.courses as course, i}
-				{#if course.select}
-					<tr
-						class:hidden={!course.courses.every(
-							(c) =>
-								displayCourses.has(
-									c.code
-								)
-						)}
-					>
-						<th
-							scope="rowgroup"
-							colspan="4"
-						>
-							{#if dev}
-								Select {course.select}
-								of following
-							{:else}
-								Chọn {course.select}
-								tín chỉ từ các học
-								phần sau:
-							{/if}
-						</th></tr
-					>
-					{#each course.courses as optCourse, index}
-						<CourseRow
-							last={index + 1 ===
-								course.courses
-									.length}
-							hidden={!displayCourses.has(
-								optCourse.code
+			{#each data.groups as group (group.name)}
+				<tr>
+					<th scope="rowgroup" colspan="5">
+						{group.name}
+					</th></tr
+				>
+				{#each group.courses as course, i}
+					{#if course.select}
+						<tr
+							class:hidden={!course.courses.every(
+								(c) =>
+									displayCourses.has(
+										c.code
+									)
 							)}
-							bind:course={optCourse}
+						>
+							<th />
+							<th
+								scope="rowgroup"
+								colspan="4"
+							>
+								{course.name}
+							</th></tr
+						>
+						{#each course.courses as optCourse, index}
+							<CourseRow
+								last={index +
+									1 ===
+									course
+										.courses
+										.length}
+								hidden={!displayCourses.has(
+									optCourse.code
+								)}
+								bind:course={optCourse}
+								on:change={saveScores}
+							/>
+						{/each}
+					{:else}
+						<CourseRow
+							last={i + 1 ===
+								group.courses
+									.length}
+							bind:course
+							hidden={!displayCourses.has(
+								course.code
+							)}
 							on:change={saveScores}
 						/>
-					{/each}
-				{:else}
-					<CourseRow
-						last={i + 1 ===
-							data.courses.length}
-						bind:course
-						hidden={!displayCourses.has(
-							course.code
-						)}
-						on:change={saveScores}
-					/>
-				{/if}
+					{/if}
+				{/each}
 			{/each}
 			{#if !displayCourses.size}
 				<tr>
@@ -157,6 +163,7 @@
 			{/if}
 		</tbody>
 		<tfoot>
+			<th />
 			<th>Total:</th>
 			<th>{result.msg}</th>
 			<th>{result.credit}</th>
