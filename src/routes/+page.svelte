@@ -66,8 +66,11 @@
 	function getDisplayCourses(courses, search) {
 		/** @type {boolean | undefined} */
 		let required = undefined;
+		/** @type {number | undefined} */
+		let cred = undefined;
 		if (search.toLowerCase() === "bb") required = true;
 		if (search.toLowerCase() === "tc") required = false;
+		if (!isNaN(+search)) cred = +search;
 		if (!search) return new Set(courses.map((c) => c.code));
 		const codes = new Set(
 			courses
@@ -75,7 +78,8 @@
 					(c) =>
 						matchASCII(c.name, search) ||
 						c.code.includes(search) ||
-						c.required === required
+						c.required === required ||
+						c.credit === cred
 				)
 				.map((c) => c.code)
 		);
