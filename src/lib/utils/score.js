@@ -57,9 +57,10 @@ function graduateCourseGroup(group) {
 
 /**
  * @param {Array<Course|CourseGroup>} courses
+ * @param {number} credit 
  *
  */
-export function graduate(courses) {
+export function graduate(courses, credit) {
 	let ttCredit = 0
 	let allPassed = true;
 	let msg; 
@@ -80,8 +81,8 @@ export function graduate(courses) {
 			ttCredit += credit
 		}
 	}
-	if (ttCredit >= TOTAL_CREDIT_REQUIRED) msg = `Bạn chưa tích lũy đủ ${TOTAL_CREDIT_REQUIRED} tín chỉ`
-	allPassed = allPassed && ttCredit >= TOTAL_CREDIT_REQUIRED;
+	if (ttCredit >= credit) msg = `Bạn chưa tích lũy đủ ${credit} tín chỉ`
+	allPassed = allPassed && ttCredit >= credit;
 
 	if (allPassed) msg = "Congratulation!!";
 	return { pass: allPassed, credit: ttCredit, msg }

@@ -18,12 +18,14 @@ export class Course {
 	 * @param {number} obj.credit
 	 * @param {boolean} obj.required
 	 */
-	constructor({ name, code, group, credit, required }) {
+	constructor({ code, required }, allCourses) {
+		const course = allCourses[code]
+		if (!course) throw new Error(`Course ${code} not exist`)
 		/**
 		 * @public
 		 * @type string	
 		 */
-		this.name = name
+		this.name = course.name
 		/**
 		 * @public
 		 * @type string	
@@ -33,12 +35,12 @@ export class Course {
 		 * @public
 		 * @type KNOWLEDGE_GROUP	
 		 */
-		this.group = group
+		this.group = course.group
 		/**
 		 * @public
 		 * @type number	
 		 */
-		this.credit = credit
+		this.credit = course.credit
 		/**
 		 * @public
 		 * @type boolean	
@@ -64,8 +66,8 @@ export class CourseGroup {
 	* @param {number} obj.select
 	* @param {Object[]} obj.courses
 	*/
-	constructor({select, courses}) {
+	constructor({select, courses}, allCourses) {
 		this.select = select;
-		this.courses = courses.map(c => new Course(c))
+		this.courses = courses.map(c => new Course(c, allCourses))
 	}
 }

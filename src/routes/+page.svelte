@@ -11,16 +11,38 @@
 	/** @type Db */
 	let db;
 	let search = "";
-	$: flatCourses = data.courses.flatMap((c) =>
-		c.select ? c.courses : [c]
-	);
-	$: average = avg(flatCourses.filter((c) => c.score && c.score > 5));
-	$: result = graduate(data.courses);
+	let degree = dev ? "sample" : "cunhan";
+	$: courses = data[degree].courses;
+	$: flatCourses = courses?.flatMap((c) => (c.select ? c.courses : [c]));
+	$: average = avg(flatCourses?.filter((c) => c.score && c.score > 5));
+	$: result = graduate(courses, data[degree].credit);
 	$: displayCourses = getDisplayCourses(flatCourses, search);
 
 	onMount(async () => {
 		db = Db.instance;
-		for await (const c of data.courses) {
+		initialize();
+		try {
+			degree = (await db.getOne("degree", "current")).value;
+		} catch {
+			await db.insert("degree", {
+				key: "current",
+				value: degree,
+			});
+		}
+		await syncScores();
+	});
+	async function saveScores(e) {
+		db.update("scores", {
+			code: e.detail.value.code,
+			score: e.detail.value.score,
+		});
+	}
+	async function syncScores() {
+		await db.update("degree", {
+			key: "current",
+			value: degree,
+		});
+		for await (const c of courses) {
 			if (!c.select) {
 				await getScore(c);
 			} else {
@@ -29,16 +51,7 @@
 				}
 			}
 		}
-		data.courses = data.courses;
-		if (!dev) {
-			initialize();
-		}
-	});
-	async function saveScores(e) {
-		db.update("scores", {
-			code: e.detail.value.code,
-			score: e.detail.value.score,
-		});
+		courses = courses;
 	}
 	async function getScore(c) {
 		const score = await Db.instance.getOne("scores", c.code);
@@ -71,16 +84,21 @@
 </svelte:head>
 
 <section>
-	<h1>{data.message}</h1>
-	<!--
-	<select name="school">
-		<option value="KHTN">KHTN</option>
-	</select>
-	<select name="specialization">
-		<option value="CNTT">CNTT</option>
-	</select>
-	-->
-	<input type="text" bind:value={search} placeholder="search" />
+	<h1>Chào mừng bạn đến với ứng dụng tín điểm học phần</h1>
+	<div class="input">
+		<select
+			bind:value={degree}
+			on:change={syncScores}
+			name="specialization"
+		>
+			{#if dev}
+				<option value="sample">Sample</option>
+			{/if}
+			<option value="cunhan">Cử nhân</option>
+			<option value="cunhan2">Cử nhân 2</option>
+		</select>
+		<input type="text" bind:value={search} placeholder="search" />
+	</div>
 	<div class="result">
 		<div class="thumbnail">
 			Tín chỉ đã tích lũy
@@ -90,7 +108,7 @@
 		</div>
 		<div class="thumbnail">
 			Điểm trung bình
-			<div class="value">{average}</div>
+			<div class="value">{average.toFixed(1)}</div>
 		</div>
 		<div class="thumbnail">
 			Đủ điều kiện tốt nghiệp
@@ -102,23 +120,15 @@
 	<table>
 		<thead>
 			<tr>
-				{#if dev}
-					<th>Code</th>
-					<th>Name</th>
-					<th>Cre</th>
-					<th>Required</th>
-					<th>Score</th>
-				{:else}
-					<th>Mã học phần</th>
-					<th>Tên tên học phần</th>
-					<th>Số tín chỉ</th>
-					<th>Loại học phần</th>
-					<th>Điểm </th>
-				{/if}
+				<th>Mã học phần</th>
+				<th>Tên tên học phần</th>
+				<th>Số tín chỉ</th>
+				<th>Loại học phần</th>
+				<th>Điểm </th>
 			</tr>
 		</thead>
 		<tbody>
-			{#each data.courses as course, i}
+			{#each courses as course, i}
 				{#if course.select}
 					<tr
 						class:hidden={!course.courses.every(
@@ -132,14 +142,8 @@
 							scope="rowgroup"
 							colspan="4"
 						>
-							{#if dev}
-								Select {course.select}
-								of following
-							{:else}
-								Chọn {course.select}
-								tín chỉ từ các học
-								phần sau:
-							{/if}
+							Chọn {course.select}
+							tín chỉ từ các học phần sau:
 						</th></tr
 					>
 					{#each course.courses as optCourse, index}
@@ -156,8 +160,7 @@
 					{/each}
 				{:else}
 					<CourseRow
-						last={i + 1 ===
-							data.courses.length}
+						last={i + 1 === courses.length}
 						bind:course
 						hidden={!displayCourses.has(
 							course.code
@@ -179,12 +182,17 @@
 			<th />
 			<th>{result.credit}</th>
 			<th />
-			<th>{average.toFixed(2)}</th>
+			<th>{average.toFixed(1)}</th>
 		</tfoot>
 	</table>
 </section>
 
 <style>
+	:global(*) {
+		--sk-text-1: black;
+		--sk-back-2: white;
+		--sk-back-3: grey;
+	}
 	section {
 		display: flex;
 		flex-direction: column;
@@ -206,31 +214,6 @@
 		text-align: left;
 	}
 
-	input {
-		border-collapse: collapse;
-		/* color-scheme: dark; */
-		--sk-text-1: black;
-		--sk-back-2: white;
-		--sk-back-3: grey;
-
-		box-sizing: inherit;
-		-webkit-tap-highlight-color: hsla(var(--sk-theme-1-hsl), 0.1);
-		margin: 0;
-		transition-property: background, background-color,
-			background-image, border;
-		border: none;
-		border-bottom: 1px solid var(--sk-back-3);
-		background: var(--sk-back-2);
-		color: var(--sk-text-1);
-		flex-shrink: 0;
-		padding: 1rem 1rem 0.5rem 1rem;
-		font-family: inherit;
-		font-size: 1rem;
-		pointer-events: all;
-		margin-bottom: 1rem;
-		position: sticky;
-		top: 0;
-	}
 	.hidden {
 		display: none;
 	}
@@ -259,5 +242,38 @@
 		flex-direction: row;
 		justify-content: space-between;
 		margin-bottom: 1rem;
+		max-width: 64rem;
+	}
+
+	.input {
+		display: flex;
+		margin-bottom: 1rem;
+		border-bottom: 1px solid var(--sk-back-3);
+		position: sticky;
+		top: 0;
+	}
+	select {
+		border: none;
+		background: var(--sk-back-2);
+		border-right: solid 1px var(--sk-back-3);
+	}
+	input {
+		border-collapse: collapse;
+		/* color-scheme: dark; */
+
+		box-sizing: inherit;
+		-webkit-tap-highlight-color: hsla(var(--sk-theme-1-hsl), 0.1);
+		margin: 0;
+		transition-property: background, background-color,
+			background-image, border;
+		border: none;
+		background: var(--sk-back-2);
+		color: var(--sk-text-1);
+		flex-shrink: 0;
+		padding: 1rem 1rem 0.5rem 1rem;
+		font-family: inherit;
+		font-size: 1rem;
+		pointer-events: all;
+		flex: 1;
 	}
 </style>

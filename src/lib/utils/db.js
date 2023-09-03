@@ -72,6 +72,10 @@ export class Db {
 				// store an objectStore for this database
 				const scoresStore = db.createObjectStore('scores', { keyPath: 'code' });
 			}
+			if (!db.objectStoreNames.contains('degree')) {
+				// store an objectStore for this database
+				const scoresStore = db.createObjectStore('degree', {keyPath: 'key'} );
+			}
 			return resolve(true)
 		})
 	}
