@@ -64,13 +64,18 @@
 	 * @param {string} search
 	 */
 	function getDisplayCourses(courses, search) {
+		/** @type {boolean | undefined} */
+		let required = undefined;
+		if (search.toLowerCase() === "bb") required = true;
+		if (search.toLowerCase() === "tc") required = false;
 		if (!search) return new Set(courses.map((c) => c.code));
 		const codes = new Set(
 			courses
 				?.filter(
 					(c) =>
 						matchASCII(c.name, search) ||
-						c.code.includes(search)
+						c.code.includes(search) ||
+						c.required === required
 				)
 				.map((c) => c.code)
 		);
