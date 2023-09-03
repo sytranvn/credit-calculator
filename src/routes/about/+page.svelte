@@ -3,7 +3,6 @@
 	import "katex/dist/katex.min.css";
 	import formula from "./formula.tex?raw";
 	import credit from "./credit.tex?raw";
-	import anno from "./anno.tex?raw";
 </script>
 
 <svelte:head>
@@ -22,7 +21,17 @@
 		Công thức tính tín chỉ: <br />
 		<Math source={credit} />
 	</p>
-	<p><Math source={anno} /></p>
+	<p>
+		<Math source="A" /> là điểm trung bình chung <br />
+		<Math source="C" /> là tổng số tín chỉ đạt <br />
+		<Math source="a_i" /> là điểm của học phần thứ <Math
+			source="i"
+		/> <br />
+		<Math source="n_i " /> là số tín chỉ của học phần thứ <Math
+			source="i"
+		/> <br />
+		<Math source="N" /> là tổng số học phần
+	</p>
 	<p>
 		This is a <a href="https://kit.svelte.dev">SvelteKit</a> app. You
 		can make your own by typing the following into your command line

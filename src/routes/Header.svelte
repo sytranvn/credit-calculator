@@ -1,14 +1,12 @@
 <script>
 	import { base } from "$app/paths";
 	import { page } from "$app/stores";
-	import logo from "$lib/images/svelte-logo.svg";
 	import github from "$lib/images/github.svg";
-	const myLogo = "%sveltekit.assets%/favicon.png";
 </script>
 
 <header>
 	<div class="corner">
-		<a href="https://sytranvn.dev">
+		<a href="/">
 			<img src={`${base}/favicon.png`} alt="SvelteKit" />
 		</a>
 	</div>
