@@ -13,7 +13,7 @@
 	<h1>About this app</h1>
 
 	<p>
-		Score formula:
+		Công thức tính điểm: <br />
 		<Math source={formula} />
 	</p>
 	<p>

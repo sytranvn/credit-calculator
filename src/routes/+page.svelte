@@ -81,6 +81,24 @@
 	</select>
 	-->
 	<input type="text" bind:value={search} placeholder="search" />
+	<div class="result">
+		<div class="thumbnail">
+			Tín chỉ đã tích lũy
+			<div class="value">
+				{result.credit}
+			</div>
+		</div>
+		<div class="thumbnail">
+			Điểm trung bình
+			<div class="value">{average}</div>
+		</div>
+		<div class="thumbnail">
+			Đủ điều kiện tốt nghiệp
+			<div class="value">
+				{result.pass ? "Đủ" : "Không"}
+			</div>
+		</div>
+	</div>
 	<table>
 		<thead>
 			<tr>
@@ -158,7 +176,7 @@
 		</tbody>
 		<tfoot>
 			<th>Total:</th>
-			<th>{result.msg}</th>
+			<th />
 			<th>{result.credit}</th>
 			<th />
 			<th>{average.toFixed(2)}</th>
@@ -210,8 +228,30 @@
 		font-size: 1rem;
 		pointer-events: all;
 		margin-bottom: 1rem;
+		position: sticky;
+		top: 0;
 	}
 	.hidden {
 		display: none;
+	}
+	.thumbnail {
+		padding: 2rem 1.25rem;
+		border: solid 1px #dee2e6;
+		border-radius: 0.25rem;
+		min-width: 150px;
+		max-width: 100%;
+		height: auto;
+		font-weight: 600;
+		text-align: center;
+	}
+	.thumbnail .value {
+		font-size: 3rem;
+		color: black;
+	}
+	.result {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		margin-bottom: 1rem;
 	}
 </style>
