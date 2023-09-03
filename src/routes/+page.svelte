@@ -190,7 +190,7 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: stretch;
-		flex: 0.6;
+		flex: 1 100%;
 	}
 
 	h1 {
@@ -235,17 +235,23 @@
 		display: none;
 	}
 	.thumbnail {
+		@media only screen and (max-width: 768px) {
+			padding: 1rem 0.3rem;
+		}
 		padding: 2rem 1.25rem;
 		border: solid 1px #dee2e6;
 		border-radius: 0.25rem;
-		min-width: 150px;
-		max-width: 100%;
+		min-width: calc(100vw / 6);
+		max-width: calc(100vw / 4);
 		height: auto;
 		font-weight: 600;
 		text-align: center;
 	}
 	.thumbnail .value {
-		font-size: 3rem;
+		@media only screen and (max-width: 768px) {
+			font-size: 1.6rem;
+		}
+		font-size: 2rem;
 		color: black;
 	}
 	.result {
