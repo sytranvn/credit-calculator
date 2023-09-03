@@ -14,7 +14,7 @@
 	$: flatCourses = data.courses.flatMap((c) =>
 		c.select ? c.courses : [c]
 	);
-	$: average = avg(flatCourses);
+	$: average = avg(flatCourses.filter((c) => c.score && c.score > 5));
 	$: result = graduate(data.courses);
 	$: displayCourses = getDisplayCourses(flatCourses, search);
 

@@ -2,6 +2,8 @@
 	import Math from "$lib/components/Math.svelte";
 	import "katex/dist/katex.min.css";
 	import formula from "./formula.tex?raw";
+	import credit from "./credit.tex?raw";
+	import anno from "./anno.tex?raw";
 </script>
 
 <svelte:head>
@@ -16,6 +18,11 @@
 		Công thức tính điểm: <br />
 		<Math source={formula} />
 	</p>
+	<p>
+		Công thức tính tín chỉ: <br />
+		<Math source={credit} />
+	</p>
+	<p><Math source={anno} /></p>
 	<p>
 		This is a <a href="https://kit.svelte.dev">SvelteKit</a> app. You
 		can make your own by typing the following into your command line
