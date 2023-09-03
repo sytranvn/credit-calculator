@@ -1,4 +1,4 @@
-[![Deploy to GitHub Pages](https://github.com/sytranvn/credit-calculator/actions/workflows/deploy.yml/badge.svg?branch=master)](https://github.com/sytranvn/credit-calculator/actions/workflows/deploy.yml)
+[![Deploy](https://github.com/sytranvn/credit-calculator/actions/workflows/deploy.yml/badge.svg?branch=master)](https://github.com/sytranvn/credit-calculator/actions/workflows/deploy.yml)
 # create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
