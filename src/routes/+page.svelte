@@ -14,7 +14,7 @@
 	let degree = dev ? "sample" : "cunhan";
 	$: courses = data[degree].courses;
 	$: flatCourses = courses?.flatMap((c) => (c.select ? c.courses : [c]));
-	$: average = avg(flatCourses?.filter((c) => c.score && c.score > 5));
+	$: average = avg(flatCourses?.filter((c) => c.score && c.score >= 5));
 	$: result = graduate(courses, data[degree].credit);
 	$: displayCourses = getDisplayCourses(flatCourses, search);
 
