@@ -51,7 +51,7 @@ export function rating(score, type) {
  */
 function graduateCourseGroup(group) {
 	const { select, courses } = group
-	const credit = courses.filter(course => course.score && course.score > 5).reduce((sum, c) => sum + c.credit, 0)
+	const credit = courses.filter(course => course.score && course.score >= 5).reduce((sum, c) => sum + c.credit, 0)
 	return { passed: credit >= select, credit }
 }
 
