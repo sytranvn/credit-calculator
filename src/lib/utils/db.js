@@ -43,7 +43,11 @@ export class Db {
 				request.removeEventListener('success', success)
 				request.removeEventListener('error', error)
 			}
-			const success = function(event) {
+			const success = 
+			/**
+			 * @param {*} event 
+			 */
+			function(event) {
 				resolve(event?.target?.result)
 				unlisten()
 			}
@@ -89,8 +93,16 @@ export class Db {
 		return new Promise((resolve, reject) => {
 			const objStore = db.transaction(obj).objectStore(obj)
 			const _get = objStore.get(key)
-			_get.onsuccess = (event) => resolve(event.target.result)
-			_get.onerror = (event) => reject(event)
+			_get.onsuccess =
+			/**
+			 * @param {*} event 
+			 */
+			(event) => resolve(event.target.result);
+			_get.onerror = 
+			/**
+			 * @param {*} event 
+			 */
+			(event) => reject(event)
 
 		})
 	}

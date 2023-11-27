@@ -11,10 +11,19 @@
 	/** @type Db */
 	let db;
 	let search = "";
+	/**
+	 * @type {"sample" | "cunhan" | "cunhan2"}
+	 */
 	let degree = dev ? "sample" : "cunhan";
 	$: courses = data[degree].courses;
-	$: flatCourses = courses?.flatMap((c) => (c.select ? c.courses : [c]));
-	$: average = avg(flatCourses?.filter((c) => c.score && c.score >= 5));
+	$: flatCourses = courses?.flatMap(
+		/** @param {any} c */ (c) => (c.select ? c.courses : [c])
+	);
+	$: average = avg(
+		flatCourses?.filter(
+			/** @param {Course} c */ (c) => c.score && c.score >= 5
+		)
+	);
 	$: result = graduate(courses, data[degree].credit);
 	$: displayCourses = getDisplayCourses(flatCourses, search);
 
@@ -31,6 +40,9 @@
 		}
 		await syncScores();
 	});
+	/**
+	 *@param {*} e
+	 */
 	async function saveScores(e) {
 		db.update("scores", {
 			code: e.detail.value.code,
@@ -53,6 +65,9 @@
 		}
 		courses = courses;
 	}
+	/**
+	 * @param {Course} c
+	 */
 	async function getScore(c) {
 		const score = await Db.instance.getOne("scores", c.code);
 		c.score = score?.score;
@@ -94,21 +109,29 @@
 
 <section>
 	<h1>Chào mừng bạn đến với ứng dụng tín điểm học phần</h1>
-	<div class="input">
-		<select
-			bind:value={degree}
-			on:change={syncScores}
-			name="specialization"
-		>
-			{#if dev}
-				<option value="sample">Sample</option>
-			{/if}
-			<option value="cunhan">Cử nhân</option>
-			<option value="cunhan2">Cử nhân 2</option>
-		</select>
-		<input type="text" bind:value={search} placeholder="search" />
+	<div class="mb-3 mt-3">
+		<div class="input-group">
+			<select
+				class="input-group-text"
+				bind:value={degree}
+				on:change={syncScores}
+				name="specialization"
+			>
+				{#if dev}
+					<option value="sample">Sample</option>
+				{/if}
+				<option value="cunhan">Cử nhân</option>
+				<option value="cunhan2">Cử nhân 2</option>
+			</select>
+			<input
+				class="form-control"
+				type="text"
+				bind:value={search}
+				placeholder="search"
+			/>
+		</div>
 	</div>
-	<div class="result">
+	<div class="result mb-3 mt-3">
 		<div class="thumbnail">
 			Tín chỉ đã tích lũy
 			<div class="value">
@@ -126,13 +149,14 @@
 			</div>
 		</div>
 	</div>
-	<table>
+
+	<table class="table table-striped table-hover">
 		<thead>
 			<tr>
 				<th>Mã học phần</th>
 				<th>Tên tên học phần</th>
 				<th>Số tín chỉ</th>
-				<th>Loại học phần</th>
+				<th>Loại</th>
 				<th>Điểm </th>
 			</tr>
 		</thead>
@@ -141,6 +165,7 @@
 				{#if course.select}
 					<tr
 						class:hidden={!course.courses.every(
+							/** @param {Course} c */
 							(c) =>
 								displayCourses.has(
 									c.code
@@ -149,7 +174,7 @@
 					>
 						<th
 							scope="rowgroup"
-							colspan="4"
+							colspan="5"
 						>
 							Chọn {course.select}
 							tín chỉ từ các học phần sau:
@@ -187,7 +212,7 @@
 			{/if}
 		</tbody>
 		<tfoot>
-			<th>Total:</th>
+			<th>Trung bình:</th>
 			<th />
 			<th>{result.credit}</th>
 			<th />
@@ -197,11 +222,6 @@
 </section>
 
 <style>
-	:global(*) {
-		--sk-text-1: black;
-		--sk-back-2: white;
-		--sk-back-3: grey;
-	}
 	section {
 		display: flex;
 		flex-direction: column;
@@ -213,6 +233,7 @@
 	h1 {
 		width: 100%;
 	}
+	/*
 	th[scope="rowgroup"] {
 		text-align: left;
 	}
@@ -222,6 +243,7 @@
 	tfoot th {
 		text-align: left;
 	}
+*/
 
 	.hidden {
 		display: none;
@@ -238,13 +260,14 @@
 		height: auto;
 		font-weight: 600;
 		text-align: center;
+		background: var(--bs-secondary-bg);
+		color: var(--bs-secondary-color);
 	}
 	.thumbnail .value {
 		@media only screen and (max-width: 768px) {
 			font-size: 1.6rem;
 		}
 		font-size: 2rem;
-		color: black;
 	}
 	.result {
 		display: flex;
@@ -252,37 +275,5 @@
 		justify-content: space-between;
 		margin-bottom: 1rem;
 		max-width: 64rem;
-	}
-
-	.input {
-		display: flex;
-		margin-bottom: 1rem;
-		border-bottom: 1px solid var(--sk-back-3);
-		position: sticky;
-		top: 0;
-	}
-	select {
-		border: none;
-		background: var(--sk-back-2);
-		border-right: solid 1px var(--sk-back-3);
-	}
-	input {
-		border-collapse: collapse;
-		/* color-scheme: dark; */
-
-		box-sizing: inherit;
-		-webkit-tap-highlight-color: hsla(var(--sk-theme-1-hsl), 0.1);
-		margin: 0;
-		transition-property: background, background-color,
-			background-image, border;
-		border: none;
-		background: var(--sk-back-2);
-		color: var(--sk-text-1);
-		flex-shrink: 0;
-		padding: 1rem 1rem 0.5rem 1rem;
-		font-family: inherit;
-		font-size: 1rem;
-		pointer-events: all;
-		flex: 1;
 	}
 </style>

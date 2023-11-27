@@ -10,33 +10,22 @@
 	<meta name="description" content="About this app" />
 </svelte:head>
 
-<div class="text-column">
-	<h1>About this app</h1>
-
+<div class="text-center">
+	<h1>Công thức</h1>
+</div>
+<div class="grid mt-3 mb-3 m-auto">
 	<p>
-		Công thức tính điểm: <br />
 		<Math source={formula} />
 	</p>
 	<p>
-		Công thức tính tín chỉ: <br />
-		<Math source={credit} />
-	</p>
-	<p>
 		<Math source="A" /> là điểm trung bình chung <br />
-		<Math source="C" /> là tổng số tín chỉ đạt <br />
 		<Math source="a_i" /> là điểm của học phần thứ <Math
 			source="i"
-		/> <br />
+		/>;
+		<Math source="a_i \geq 5" /><br />
+		<Math source="N" /> là tổng số học phần <br />
 		<Math source="n_i " /> là số tín chỉ của học phần thứ <Math
 			source="i"
 		/> <br />
-		<Math source="N" /> là tổng số học phần
 	</p>
-	<p>
-		This is a <a href="https://kit.svelte.dev">SvelteKit</a> app. You
-		can make your own by typing the following into your command line
-		and following the prompts:
-	</p>
-
-	<pre>npm create svelte@latest</pre>
 </div>

@@ -46,8 +46,9 @@
 	{/if}
 	<footer>
 		<p>
-			visit <a href="https://kit.svelte.dev">kit.svelte.dev</a
-			> to learn SvelteKit
+			Powered by
+			<a href="https://kit.svelte.dev">kit.svelte.dev</a> and
+			<a href="https://getbootstrap.com">Bootstrap</a>
 		</p>
 	</footer>
 </div>
