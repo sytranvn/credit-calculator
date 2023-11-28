@@ -10,8 +10,8 @@ import { Course, CourseGroup } from '$lib/types/course'
 * @param {any} allCoursesData 
 */
 function mapCourses(coursesData, allCoursesData) {
-	
-	const mappedCourses= coursesData.courses.map(/** @param {any} d */d => {
+
+	const mappedCourses = coursesData.courses.map(/** @param {any} d */d => {
 		if (d.select) {
 			return new CourseGroup(d, allCoursesData);
 		} else {
@@ -25,8 +25,8 @@ function mapCourses(coursesData, allCoursesData) {
 }
 
 export const courses = yaml.parse(coursesYml)
-		export const sample = mapCourses(yaml.parse(sampleYml), courses)
-	export const cunhan = mapCourses(yaml.parse(cunhanYml), courses)
+export const sample = mapCourses(yaml.parse(sampleYml), courses)
+export const cunhan = mapCourses(yaml.parse(cunhanYml), courses)
 
-	export const cunhan2 = mapCourses(yaml.parse(cunhan2Yml), courses)
+export const cunhan2 = mapCourses(yaml.parse(cunhan2Yml), courses)
 
