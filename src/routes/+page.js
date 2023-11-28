@@ -1,4 +1,4 @@
-import yaml from 'yaml';
+import yaml  from 'yaml';
 import sampleCourses from '$lib/data/sample.yaml?raw'
 import cunhanCourses from '$lib/data/cunhan.yaml?raw'
 import cunhan2Courses from '$lib/data/cunhan2.yaml?raw'
@@ -12,14 +12,13 @@ export const prerender = true;
 * @param {any} allCoursesData 
 */
 function mapCourses(courses, allCoursesData) {
-	return courses.map(d => {
+	return courses.map(/** @param {any} d */d => {
 		if (d.select) {
 			return new CourseGroup(d, allCoursesData);
 		} else {
 			return new Course(d, allCoursesData);
 		}
 	})
-
 }
 
 export async function load() {
@@ -31,8 +30,11 @@ export async function load() {
 	}
 	const cunhan = yaml.parse(cunhanCourses)
 	cunhan.courses = mapCourses(cunhan.courses, allCoursesData)
+
 	const cunhan2 = yaml.parse(cunhan2Courses)
 	cunhan2.courses = mapCourses(cunhan2.courses, allCoursesData)
+
+
 	return {
 		sample,
 		cunhan,

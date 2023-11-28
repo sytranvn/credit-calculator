@@ -37,7 +37,7 @@
 
 <style>
 	.last {
-		border-bottom: solid 1px black;
+		border-bottom: solid 5px var(--bs-border-color-translucent);
 	}
 	.hidden {
 		display: none;

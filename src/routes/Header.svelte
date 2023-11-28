@@ -97,7 +97,15 @@
 					? "page"
 					: undefined}
 			>
-				<a href={`${base}/about`}>About</a>
+				<a href={`${base}/about`}>Công thức </a>
+			</li>
+			<li
+				aria-current={$page.url.pathname ===
+				`${base}/histogram`
+					? "page"
+					: undefined}
+			>
+				<a href={`${base}/histogram`}>Phổ điểm</a>
 			</li>
 		</ul>
 	</nav>

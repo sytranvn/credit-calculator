@@ -150,7 +150,7 @@
 		</div>
 	</div>
 
-	<table class="table table-striped table-hover">
+	<table class="table table-hover">
 		<thead>
 			<tr>
 				<th>Mã học phần</th>
@@ -164,6 +164,7 @@
 			{#each courses as course, i}
 				{#if course.select}
 					<tr
+						class="table-secondary"
 						class:hidden={!course.courses.every(
 							/** @param {Course} c */
 							(c) =>
@@ -211,13 +212,6 @@
 				</tr>
 			{/if}
 		</tbody>
-		<tfoot>
-			<th>Trung bình:</th>
-			<th />
-			<th>{result.credit}</th>
-			<th />
-			<th>{average.toFixed(1)}</th>
-		</tfoot>
 	</table>
 </section>
 
