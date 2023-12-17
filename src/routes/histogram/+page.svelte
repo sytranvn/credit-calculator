@@ -7,7 +7,6 @@
 	let mon;
 	/** @type {typeof data.hkdata[number] | undefined } */
 	let mondata;
-	let tenmon = "";
 	$: mondata = data.hkdata.find((m) => m.mon === mon);
 	/** @type {import("chart.js").ChartData} */
 	let chartData;
@@ -21,6 +20,14 @@
 		],
 	};
 </script>
+
+<svelte:head>
+	<title>Histogram</title>
+	<meta
+		name="description"
+		content="Phổ điểm môn học học kỳ 2 năm học 2022-2023"
+	/>
+</svelte:head>
 
 <h1>Phổ điểm môn học học kỳ 2 năm học 2022-2023</h1>
 <select class="form-select" bind:value={mon}>

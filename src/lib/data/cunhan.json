@@ -1,0 +1,353 @@
+{
+    "credit": 138,
+    "courses": [
+        {
+            "code": "BAA00101",
+            "required": true
+        },
+        {
+            "code": "BAA00102",
+            "required": true
+        },
+        {
+            "code": "BAA00103",
+            "required": true
+        },
+        {
+            "code": "BAA00104",
+            "required": true
+        },
+        {
+            "code": "BAA00003",
+            "required": true
+        },
+        {
+            "code": "BAA00004",
+            "required": true
+        },
+        {
+            "select": 2,
+            "courses": [
+                {
+                    "code": "BAA00005",
+                    "required": false
+                },
+                {
+                    "code": "BAA00006",
+                    "required": false
+                },
+                {
+                    "code": "BAA00007",
+                    "required": false
+                }
+            ]
+        },
+        {
+            "code": "MTH00003",
+            "required": true
+        },
+        {
+            "code": "MTH00081",
+            "required": true
+        },
+        {
+            "code": "MTH0004",
+            "required": true
+        },
+        {
+            "code": "MTH00082",
+            "required": true
+        },
+        {
+            "code": "MTH00030",
+            "required": true
+        },
+        {
+            "code": "MTH00083",
+            "required": true
+        },
+        {
+            "code": "MTH00040",
+            "required": true
+        },
+        {
+            "code": "MTH00085",
+            "required": true
+        },
+        {
+            "code": "MTH00041",
+            "required": true
+        },
+        {
+            "code": "MTH00086",
+            "required": true
+        },
+        {
+            "select": 4,
+            "courses": [
+                {
+                    "code": "MTH00050",
+                    "required": false
+                },
+                {
+                    "code": "CSC00008",
+                    "required": false
+                }
+            ]
+        },
+        {
+            "select": 4,
+            "courses": [
+                {
+                    "code": "MTH00051",
+                    "required": false
+                },
+                {
+                    "code": "MTH00052",
+                    "required": false
+                },
+                {
+                    "code": "MTH00053",
+                    "required": false
+                },
+                {
+                    "code": "MTH00054",
+                    "required": false
+                }
+            ]
+        },
+        {
+            "select": 6,
+            "courses": [
+                {
+                    "code": "CHE00001",
+                    "required": false
+                },
+                {
+                    "code": "CHE00002",
+                    "required": false
+                },
+                {
+                    "code": "CHE00081",
+                    "required": false
+                },
+                {
+                    "code": "CHE00081",
+                    "required": false
+                },
+                {
+                    "code": "BIO00001",
+                    "required": false
+                },
+                {
+                    "code": "BIO00081",
+                    "required": false
+                },
+                {
+                    "code": "BIO00002",
+                    "required": false
+                },
+                {
+                    "code": "BIO00082",
+                    "required": false
+                },
+                {
+                    "code": "PHY00001",
+                    "required": false
+                },
+                {
+                    "code": "PHY00002",
+                    "required": false
+                },
+                {
+                    "code": "PHY00081",
+                    "required": false
+                }
+            ]
+        },
+        {
+            "select": 2,
+            "courses": [
+                {
+                    "code": "GEO00002",
+                    "required": false
+                },
+                {
+                    "code": "ENV00001",
+                    "required": false
+                },
+                {
+                    "code": "ENV00003",
+                    "required": false
+                }
+            ]
+        },
+        {
+            "select": 4,
+            "courses": [
+                {
+                    "code": "CSC00004",
+                    "required": false
+                },
+                {
+                    "code": "CSC00006",
+                    "required": false
+                }
+            ]
+        },
+        {
+            "code": "CSC10001",
+            "required": true
+        },
+        {
+            "code": "CSC10002",
+            "required": true
+        },
+        {
+            "code": "CSC10003",
+            "required": true
+        },
+        {
+            "code": "CSC10004",
+            "required": true
+        },
+        {
+            "code": "CSC10006",
+            "required": true
+        },
+        {
+            "code": "CSC10007",
+            "required": true
+        },
+        {
+            "code": "CSC10008",
+            "required": true
+        },
+        {
+            "code": "CSC10009",
+            "required": true
+        },
+        {
+            "code": "CSC13002",
+            "required": true
+        },
+        {
+            "code": "CSC14003",
+            "required": true
+        },
+        {
+            "select": 34,
+            "courses": [
+                {
+                    "code": "CSC11002",
+                    "required": false
+                },
+                {
+                    "code": "CSC11114",
+                    "required": false
+                },
+                {
+                    "code": "CSC12001",
+                    "required": false
+                },
+                {
+                    "code": "CSC12002",
+                    "required": false
+                },
+                {
+                    "code": "CSC12003",
+                    "required": false
+                },
+                {
+                    "code": "CSC12004",
+                    "required": false
+                },
+                {
+                    "code": "CSC12105",
+                    "required": false
+                },
+                {
+                    "code": "CSC12112",
+                    "required": false
+                },
+                {
+                    "code": "CSC12113",
+                    "required": false
+                },
+                {
+                    "code": "CSC13003",
+                    "required": false
+                },
+                {
+                    "code": "CSC13006",
+                    "required": false
+                },
+                {
+                    "code": "CSC13008",
+                    "required": false
+                },
+                {
+                    "code": "CSC13009",
+                    "required": false
+                },
+                {
+                    "code": "CSC13010",
+                    "required": false
+                },
+                {
+                    "code": "CSC13119",
+                    "required": false
+                },
+                {
+                    "code": "CSC13120",
+                    "required": false
+                },
+                {
+                    "code": "CSC13121",
+                    "required": false
+                },
+                {
+                    "code": "CSC13122",
+                    "required": false
+                },
+                {
+                    "code": "CSC15004",
+                    "required": false
+                },
+                {
+                    "code": "CSC15007",
+                    "required": false
+                }
+            ]
+        },
+        {
+            "select": 10,
+            "courses": [
+                {
+                    "code": "CSC10202",
+                    "required": false
+                },
+                {
+                    "code": "CSC10203",
+                    "required": false
+                },
+                {
+                    "code": "CSC12107",
+                    "required": false
+                },
+                {
+                    "code": "CSC13115",
+                    "required": false
+                },
+                {
+                    "code": "CSC13118",
+                    "required": false
+                },
+                {
+                    "code": "CSC13123",
+                    "required": false
+                }
+            ]
+        }
+    ]
+}

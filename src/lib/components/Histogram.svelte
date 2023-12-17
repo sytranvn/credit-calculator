@@ -3,7 +3,7 @@
 	/** @type {import("chart.js").ChartData} */
 	export let data;
 	/** @type {import("chart.js").ChartOptions} */
-	export let options;
+	export let options = {};
 	/** @type {HTMLCanvasElement} */
 	let canvasElement;
 	/** @type {any} */

@@ -1,12 +1,16 @@
 <script>
 	import { createEventDispatcher } from "svelte";
 
+	const statusMap = { "": "", inprogress: "warning", passed: "success" };
 	/**
 	 * @type{import('$lib/types/course').Course}
 	 */
 	export let course;
 	export let last = false;
 	export let hidden = false;
+	/** @type {"" | "inprogress" | "passed"} */
+	export let status = "";
+	$: statusCls = statusMap[status];
 	$: error = course.score && (course.score < 0 || course.score > 10);
 	const dispatch = createEventDispatcher();
 	function change() {
@@ -32,6 +36,9 @@
 			max="10"
 			on:input={change}
 		/>
+	</td>
+	<td>
+		<span class={statusCls}>{status}</span>
 	</td>
 </tr>
 

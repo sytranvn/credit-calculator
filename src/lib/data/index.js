@@ -1,8 +1,7 @@
-import coursesYml from '$lib/data/courses.yaml?raw'
-import sampleYml from '$lib/data/sample.yaml?raw'
-import cunhanYml from '$lib/data/cunhan.yaml?raw'
-import cunhan2Yml from '$lib/data/cunhan2.yaml?raw'
-import yaml from 'yaml'
+import coursesYml from '$lib/data/courses.json'
+import sampleYml from '$lib/data/sample.json'
+import cunhanYml from '$lib/data/cunhan.json'
+import cunhan2Yml from '$lib/data/cunhan2.json'
 import { Course, CourseGroup } from '$lib/types/course'
 
 /**
@@ -24,9 +23,8 @@ function mapCourses(coursesData, allCoursesData) {
 	}
 }
 
-export const courses = yaml.parse(coursesYml)
-export const sample = mapCourses(yaml.parse(sampleYml), courses)
-export const cunhan = mapCourses(yaml.parse(cunhanYml), courses)
-
-export const cunhan2 = mapCourses(yaml.parse(cunhan2Yml), courses)
+export const courses = coursesYml
+export const sample = mapCourses(sampleYml, courses)
+export const cunhan = mapCourses(cunhanYml, courses)
+export const cunhan2 = mapCourses(cunhan2Yml, courses)
 

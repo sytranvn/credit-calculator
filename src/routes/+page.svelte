@@ -6,6 +6,8 @@
 	import { matchASCII } from "$lib/utils/searching.js";
 	import { onMount } from "svelte";
 	import { initialize } from "$lib/utils/firebase.js";
+	import Result from "$lib/components/Result.svelte";
+	import Search from "$lib/components/Search.svelte";
 
 	export let data;
 	/** @type Db */
@@ -104,51 +106,13 @@
 
 <svelte:head>
 	<title>Home</title>
-	<meta name="description" content="Credit calculator app" />
+	<meta name="description" content="Ứng dụng tính điểm học phần" />
 </svelte:head>
 
 <section>
-	<h1>Chào mừng bạn đến với ứng dụng tín điểm học phần</h1>
-	<div class="mb-3 mt-3">
-		<div class="input-group">
-			<select
-				class="input-group-text"
-				bind:value={degree}
-				on:change={syncScores}
-				name="specialization"
-			>
-				{#if dev}
-					<option value="sample">Sample</option>
-				{/if}
-				<option value="cunhan">Cử nhân</option>
-				<option value="cunhan2">Cử nhân 2</option>
-			</select>
-			<input
-				class="form-control"
-				type="text"
-				bind:value={search}
-				placeholder="search"
-			/>
-		</div>
-	</div>
-	<div class="result mb-3 mt-3">
-		<div class="thumbnail">
-			Tín chỉ đã tích lũy
-			<div class="value">
-				{result.credit}
-			</div>
-		</div>
-		<div class="thumbnail">
-			Điểm trung bình
-			<div class="value">{average.toFixed(1)}</div>
-		</div>
-		<div class="thumbnail">
-			Đủ điều kiện tốt nghiệp
-			<div class="value">
-				{result.pass ? "Đủ" : "Không"}
-			</div>
-		</div>
-	</div>
+	<h1>Chào mừng bạn đến với ứng dụng tính điểm học phần</h1>
+	<Search bind:degree bind:search on:change:degree={syncScores} />
+	<Result {result} credit={data[degree].credit} {average} />
 
 	<table class="table table-hover">
 		<thead>
@@ -158,6 +122,7 @@
 				<th>Số tín chỉ</th>
 				<th>Loại</th>
 				<th>Điểm </th>
+				<th />
 			</tr>
 		</thead>
 		<tbody>
@@ -175,7 +140,7 @@
 					>
 						<th
 							scope="rowgroup"
-							colspan="5"
+							colspan="6"
 						>
 							Chọn {course.select}
 							tín chỉ từ các học phần sau:
@@ -227,47 +192,8 @@
 	h1 {
 		width: 100%;
 	}
-	/*
-	th[scope="rowgroup"] {
-		text-align: left;
-	}
-	table {
-		border-collapse: collapse;
-	}
-	tfoot th {
-		text-align: left;
-	}
-*/
 
 	.hidden {
 		display: none;
-	}
-	.thumbnail {
-		@media only screen and (max-width: 768px) {
-			padding: 1rem 0.3rem;
-		}
-		padding: 2rem 1.25rem;
-		border: solid 1px #dee2e6;
-		border-radius: 0.25rem;
-		min-width: calc(100vw / 6);
-		max-width: calc(100vw / 4);
-		height: auto;
-		font-weight: 600;
-		text-align: center;
-		background: var(--bs-secondary-bg);
-		color: var(--bs-secondary-color);
-	}
-	.thumbnail .value {
-		@media only screen and (max-width: 768px) {
-			font-size: 1.6rem;
-		}
-		font-size: 2rem;
-	}
-	.result {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		margin-bottom: 1rem;
-		max-width: 64rem;
 	}
 </style>

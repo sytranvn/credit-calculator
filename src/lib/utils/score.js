@@ -1,4 +1,4 @@
-import { CourseGroup, Course, TOTAL_CREDIT_REQUIRED } from "$lib/types/course"
+import { CourseGroup, Course } from "$lib/types/course"
 
 /**
  * $$
@@ -20,12 +20,12 @@ export function avg(courses) {
  * Convert 10.0 grading to 4.0 or ABCD grading
  * @param {number} score
  * @param {(4|'A'|'A+'|'G')} type
- * @returns {string|number}
+ * @returns {string}
  */
 export function rating(score, type) {
 	if (type === 4) {
-		if (score < 5) return score / 5;
-		return ((score - 5) / 5) + 1;
+		if (score < 5) return String(score / 5);
+		return String(((score - 5) / 5) + 1);
 	}
 	if (type === 'A') {
 		if (score >= 8) return 'A';
@@ -43,7 +43,7 @@ export function rating(score, type) {
 		return 'F';
 
 	}
-	return score
+	return String(score)
 }
 
 /**
