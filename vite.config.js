@@ -41,10 +41,10 @@ export default defineConfig(({ mode }) => {
 			rssPlugin({
 				mode: "define",
 				channel: {
-					title: "Sy Tran - Math",
+					title: "Đào tạo từ xa HCMUS",
 					link: BASE_LINK,
 					lastBuildDate: new Date(),
-					description: `Recent change on Sy Tran - Math`
+					description: `Thay đổi mới trên Đào tạo từ xa HCMUS`
 				},
 				items: pages.map(page => ({ link: `${BASE_LINK}/${page.name}`, pubDate: page.pubDate })),
 			})]
