@@ -46,6 +46,10 @@
 	{/if}
 	<footer>
 		<p>
+			© MIT -
+			<a href="/terms-of-services">Terms of Services</a>
+		</p>
+		<p>
 			Powered by
 			<a href="https://kit.svelte.dev">kit.svelte.dev</a> and
 			<a href="https://getbootstrap.com">Bootstrap</a>
