@@ -7,7 +7,10 @@
 
 <svelte:head>
 	<title>About</title>
-	<meta name="description" content="About this app" />
+	<meta
+		name="description"
+		content="Công thức tính điểm học phần trường Đại học Khoa Học Tự Nhiên hệ Đào tạo từ xa"
+	/>
 </svelte:head>
 
 <div class="text-center">

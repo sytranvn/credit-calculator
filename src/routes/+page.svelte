@@ -106,7 +106,10 @@
 
 <svelte:head>
 	<title>Home</title>
-	<meta name="description" content="Ứng dụng tính điểm học phần" />
+	<meta
+		name="description"
+		content="Ứng dụng tính điểm học phần trường Đại học Khoa Học Tự Nhiên hệ Đào tạo từ xa"
+	/>
 </svelte:head>
 
 <section>
