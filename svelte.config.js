@@ -1,11 +1,10 @@
-import adapter from '@sveltejs/adapter-static';
- 
+import adapter from 'svelte-adapter-static-sitemap' 
 const dev = process.argv.includes('dev');
  
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   kit: {
-    adapter: adapter(),
+    adapter: adapter({ domain: process.env.DOMAIN }),
     paths: {
       base: dev ? '' : process.env.BASE_PATH,
     }

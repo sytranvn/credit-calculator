@@ -29,7 +29,7 @@ pages = await Promise.all(pages
 		pubDate: (await fs.stat(f)).mtime
 	})))
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode}) => {
 	const env = loadEnv(mode, process.cwd(), '')
 	const BASE_URL = env.BASE_URL || ''
 	const DOMAIN = env.DOMAIN || ''
@@ -47,7 +47,8 @@ export default defineConfig(({ mode }) => {
 					description: `Thay đổi mới trên Đào tạo từ xa HCMUS`
 				},
 				items: pages.map(page => ({ link: `${BASE_LINK}/${page.name}`, pubDate: page.pubDate })),
-			})]
+			}),
+		]
 	}
 })
 
