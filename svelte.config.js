@@ -1,5 +1,7 @@
+import dotenv from 'dotenv'
 import adapter from 'svelte-adapter-static-sitemap' 
 const dev = process.argv.includes('dev');
+dotenv.config()
  
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
