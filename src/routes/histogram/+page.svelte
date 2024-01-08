@@ -31,7 +31,6 @@
 
 <h1>Phổ điểm môn học học kỳ 2 năm học 2022-2023</h1>
 <select class="form-select" bind:value={mon}>
-	<option selected>Select</option>
 	{#each data.hkdata as mon}
 		<option value={mon.mon}>{mon.ten}</option>
 	{/each}

@@ -36,7 +36,7 @@ export class Db {
 	 * @param {number} version
 	 */
 	getIndexedDB(db, version) {
-		const request = indexedDB.open(db, version);
+		const request = indexedDB.open(db, version + 3);
 		request.onupgradeneeded = this.upgrade;
 		return new Promise((resolve, reject) => {
 			const unlisten = () => {
@@ -75,6 +75,14 @@ export class Db {
 			if (!db.objectStoreNames.contains('scores')) {
 				// store an objectStore for this database
 				const scoresStore = db.createObjectStore('scores', { keyPath: 'code' });
+			} else {
+				Db.#instance.getOne('scores', 'MTH0004').then(old => {
+					if (old) {
+						Db.#instance.delete('scores', 'MTH0004')
+						Db.#instance.insert('scores', {...old, code: 'MTH00004'})
+					} 
+				 }).catch(console.error)
+
 			}
 			if (!db.objectStoreNames.contains('degree')) {
 				// store an objectStore for this database
@@ -127,6 +135,17 @@ export class Db {
 		const objStore = db.transaction([obj], "readwrite").objectStore(obj)
 		const put = objStore.put(value)
 		return this.promisedRequest(put)
+	}
+
+	/**
+	* @param {string} obj
+	* @param {string} key
+	*/
+	async delete(obj, key) {
+		const db = await Db.instance.db();
+		const objStore = db.transaction([obj], "readwrite").objectStore(obj)
+		const del = objStore.delete(key)
+		return this.promisedRequest(del)
 	}
 
 	/**
