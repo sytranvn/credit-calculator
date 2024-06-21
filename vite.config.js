@@ -5,6 +5,10 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig, loadEnv } from 'vite';
 import { rssPlugin } from 'vite-plugin-rss';
 
+/**
+ * @param {string} dir 
+ * @returns {Promise<string[]>}
+ */
 export async function listFiles(dir) {
 	const results = []
 	const files = await fs.readdir(dir, { withFileTypes: true, recursive: true })
@@ -21,8 +25,9 @@ export async function listFiles(dir) {
 
 const dir = path.dirname(fileURLToPath(import.meta.url))
 const src = path.join(dir, './src/routes')
-let pages = await listFiles(src)
-pages = await Promise.all(pages
+let pageNames = await listFiles(src)
+
+const pages = await Promise.all(pageNames
 	.filter(f => path.basename(f) === '+page.svelte')
 	.map(async f => ({
 		name: path.relative(src, f.replace('+page.svelte', '')),
@@ -32,7 +37,7 @@ pages = await Promise.all(pages
 export default defineConfig(({ mode}) => {
 	const env = loadEnv(mode, process.cwd(), '')
 	const BASE_URL = env.BASE_URL || ''
-	const DOMAIN = env.DOMAIN || ''
+	const DOMAIN = env.DOMAIN || 'http://localhost:3000'
 	const BASE_LINK = `${DOMAIN}${BASE_URL}`
 
 	return {
@@ -46,7 +51,8 @@ export default defineConfig(({ mode}) => {
 					lastBuildDate: new Date(),
 					description: `Thay đổi mới trên Đào tạo từ xa HCMUS`
 				},
-				items: pages.map(page => ({ link: `${BASE_LINK}/${page.name}`, pubDate: page.pubDate })),
+				items: pages.map(page => ({ link: `${BASE_LINK}/${page.name}`, pubDate: page.pubDate, 
+				title: page.name.substring(page.name.lastIndexOf("/")).replace(/-_/, "") })),
 			}),
 		]
 	}

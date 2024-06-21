@@ -2,7 +2,6 @@
 	import Math from "$lib/components/Math.svelte";
 	import "katex/dist/katex.min.css";
 	import formula from "./formula.tex?raw";
-	import credit from "./credit.tex?raw";
 </script>
 
 <svelte:head>
