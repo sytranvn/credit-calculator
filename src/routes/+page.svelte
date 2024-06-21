@@ -19,12 +19,12 @@
 	let degree = dev ? "sample" : "cunhan";
 	$: courses = data[degree].courses;
 	$: flatCourses = courses?.flatMap(
-		/** @param {any} c */ (c) => (c.select ? c.courses : [c])
+		/** @param {any} c */ (c) => (c.select ? c.courses : [c]),
 	);
 	$: average = avg(
 		flatCourses?.filter(
-			/** @param {Course} c */ (c) => c.score && c.score >= 5
-		)
+			/** @param {Course} c */ (c) => c.score && c.score >= 5,
+		),
 	);
 	$: result = graduate(courses, data[degree].credit);
 	$: displayCourses = getDisplayCourses(flatCourses, search);
@@ -96,9 +96,9 @@
 						matchASCII(c.name, search) ||
 						c.code.includes(search) ||
 						c.required === required ||
-						c.credit === cred
+						c.credit === cred,
 				)
-				.map((c) => c.code)
+				.map((c) => c.code),
 		);
 		return codes;
 	}
@@ -137,15 +137,27 @@
 							/** @param {Course} c */
 							(c) =>
 								displayCourses.has(
-									c.code
-								)
+									c.code,
+								),
 						)}
 					>
 						<th
 							scope="rowgroup"
 							colspan="6"
 						>
-							Chọn {course.select}
+							Hoàn thành {course.courses.reduce(
+								/**
+								 * @param {number} cr
+								 * @param {Course} c
+								 */
+								(cr, c) =>
+									c.score >=
+									5
+										? cr +
+											c.credit
+										: cr,
+								0,
+							)}/{course.select}
 							tín chỉ từ các học phần sau:
 						</th></tr
 					>
@@ -155,7 +167,7 @@
 								course.courses
 									.length}
 							hidden={!displayCourses.has(
-								optCourse.code
+								optCourse.code,
 							)}
 							bind:course={optCourse}
 							on:change={saveScores}
@@ -166,7 +178,7 @@
 						last={i + 1 === courses.length}
 						bind:course
 						hidden={!displayCourses.has(
-							course.code
+							course.code,
 						)}
 						on:change={saveScores}
 					/>
