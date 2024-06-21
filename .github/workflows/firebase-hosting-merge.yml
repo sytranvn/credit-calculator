@@ -10,6 +10,7 @@ env:
   PROJECT: ${{ secrets.PROJECT }}
   API_KEY: ${{ secrets.API_KEY }}
   APP_ID: "${{ secrets.APP_ID }}"
+  DOMAIN: ${{ secrets.DOMAIN }}
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
