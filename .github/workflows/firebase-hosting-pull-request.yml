@@ -11,6 +11,7 @@ env:
   PROJECT: ${{ secrets.PROJECT }}
   API_KEY: ${{ secrets.API_KEY }}
   APP_ID: "${{ secrets.APP_ID }}"
+  DOMAIN: ${{ secrets.DOMAIN }}
 jobs:
   build_and_preview:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
