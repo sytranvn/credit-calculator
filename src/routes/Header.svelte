@@ -92,7 +92,7 @@
 			</li>
 			<li
 				aria-current={$page.url.pathname.includes(
-					`${base}/about/`,
+					`${base}/about`,
 				)
 					? "page"
 					: undefined}
