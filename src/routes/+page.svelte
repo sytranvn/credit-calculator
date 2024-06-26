@@ -121,8 +121,8 @@
 		<thead>
 			<tr>
 				<th>Mã học phần</th>
-				<th>Tên tên học phần</th>
-				<th>Số tín chỉ</th>
+				<th>Tên</th>
+				<th>Tín chỉ</th>
 				<th>Loại</th>
 				<th>Điểm </th>
 				<th />

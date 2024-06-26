@@ -1,5 +1,5 @@
 <script>
-	import Header from "./Header.svelte";
+	import Header from "$lib/components/Header.svelte";
 	import "./styles.css";
 	import { browser } from "$app/environment";
 	import { fade } from "svelte/transition";
@@ -118,7 +118,9 @@
 		position: fixed;
 		right: 20px;
 		-webkit-tap-highlight-color: transparent;
-		transition: bottom 0.2s, opacity 0.2s;
+		transition:
+			bottom 0.2s,
+			opacity 0.2s;
 		user-select: none;
 		z-index: 100;
 	}

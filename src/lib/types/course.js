@@ -17,6 +17,7 @@ export class Course {
 	 * @param {KNOWLEDGE_GROUP} obj.group
 	 * @param {number} obj.credit
 	 * @param {boolean} obj.required
+	 * @param {Record<string, Course>} allCourses 
 	 */
 	constructor({ code, required }, allCourses) {
 		const course = allCourses[code]
@@ -65,9 +66,10 @@ export class CourseGroup {
 	* @param {Object} obj
 	* @param {number} obj.select
 	* @param {Object[]} obj.courses
+	* @param {Record<string, Course>} allCourses 
 	*/
 	constructor({select, courses}, allCourses) {
 		this.select = select;
-		this.courses = courses.map(c => new Course(c, allCourses))
+		this.courses = courses.map(/** @param {any} c */c => new Course(c, allCourses))
 	}
 }
