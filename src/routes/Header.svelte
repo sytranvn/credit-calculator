@@ -37,17 +37,17 @@
 			if (
 				theme === "auto" &&
 				window.matchMedia(
-					"(prefers-color-scheme: dark)"
+					"(prefers-color-scheme: dark)",
 				).matches
 			) {
 				document.documentElement.setAttribute(
 					"data-bs-theme",
-					"dark"
+					"dark",
 				);
 			} else {
 				document.documentElement.setAttribute(
 					"data-bs-theme",
-					theme
+					theme,
 				);
 			}
 			setStoredTheme(theme);
@@ -83,7 +83,6 @@
 
 	<nav>
 		<ul>
-			<div style="" />
 			<li
 				aria-current={$page.url.pathname === "/"
 					? "page"
@@ -92,16 +91,18 @@
 				<a href={`${base}/`}>Home</a>
 			</li>
 			<li
-				aria-current={$page.url.pathname ===
-				`${base}/about`
+				aria-current={$page.url.pathname.includes(
+					`${base}/about/`,
+				)
 					? "page"
 					: undefined}
 			>
 				<a href={`${base}/about`}>Công thức </a>
 			</li>
 			<li
-				aria-current={$page.url.pathname ===
-				`${base}/histogram`
+				aria-current={$page.url.pathname.includes(
+					`${base}/histogram`,
+				)
 					? "page"
 					: undefined}
 			>
