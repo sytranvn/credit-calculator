@@ -33,7 +33,7 @@
 		db = Db.instance;
 		initialize();
 		try {
-			degree = (await db.getOne("degree", "current")).value;
+			degree = (await db.getOne("info", "current")).value;
 		} catch {
 			await db.insert("degree", {
 				key: "current",

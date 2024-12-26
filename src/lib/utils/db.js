@@ -43,14 +43,14 @@ export class Db {
 				request.removeEventListener('success', success)
 				request.removeEventListener('error', error)
 			}
-			const success = 
-			/**
-			 * @param {*} event 
-			 */
-			function(event) {
-				resolve(event?.target?.result)
-				unlisten()
-			}
+			const success =
+				/**
+				 * @param {*} event 
+				 */
+				function(event) {
+					resolve(event?.target?.result)
+					unlisten()
+				}
 
 			const error = function() {
 				reject("Cannot connect")
@@ -65,8 +65,9 @@ export class Db {
 	 * @param {IDBVersionChangeEvent} event 
 	 */
 	upgrade(event) {
+		/** @type {IDBDatabase} */
 		const db = event?.target?.result
-		return new Promise((resolve, reject) => {
+		return new Promise(async (resolve, reject) => {
 
 			db.onerror = () => {
 				console.warn("Error loading db")
@@ -79,17 +80,28 @@ export class Db {
 				Db.#instance.getOne('scores', 'MTH0004').then(old => {
 					if (old) {
 						Db.#instance.delete('scores', 'MTH0004')
-						Db.#instance.insert('scores', {...old, code: 'MTH00004'})
-					} 
-				 }).catch(console.error)
+						Db.#instance.insert('scores', { ...old, code: 'MTH00004' })
+					}
+				}).catch(console.error)
 
 			}
+			let degree = 'cunhan';
 			if (!db.objectStoreNames.contains('degree')) {
 				// store an objectStore for this database
-				const scoresStore = db.createObjectStore('degree', {keyPath: 'key'} );
+				const degreeStore = db.createObjectStore('degree', { keyPath: 'key' });
+			}
+
+			if (!db.objectStoreNames.contains('info')) {
+				// store an objectStore for this database
+				const yearStore = db.createObjectStore('info', { keyPath: 'key' });
+				Db.#instance.insert('info', { key: 'current', value: { degree, year: 2022 } })
 			}
 			return resolve(true)
 		})
+
+		if (event.newVersion !== null && event.oldVersion < event.newVersion) {
+			db.deleteObjectStore('degree');
+		}
 	}
 
 	/**
@@ -102,15 +114,15 @@ export class Db {
 			const objStore = db.transaction(obj).objectStore(obj)
 			const _get = objStore.get(key)
 			_get.onsuccess =
-			/**
-			 * @param {*} event 
-			 */
-			(event) => resolve(event.target.result);
-			_get.onerror = 
-			/**
-			 * @param {*} event 
-			 */
-			(event) => reject(event)
+				/**
+				 * @param {*} event 
+				 */
+				(event) => resolve(event.target.result);
+			_get.onerror =
+				/**
+				 * @param {*} event 
+				 */
+				(event) => reject(event)
 
 		})
 	}
