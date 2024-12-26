@@ -10,7 +10,6 @@
     "owner": {
       "symbol": "👑",
       "description": "Owner of the project",
-      "link": "[<%= symbol %>](<%= url %> \"<%= description %>\"),"
     }
   },
   "contributorsPerLine": 7,
