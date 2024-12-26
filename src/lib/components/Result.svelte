@@ -12,7 +12,7 @@
 		title="Tín chỉ đã tích lũy"
 		value={`${result.credit}/${credit}`}
 	/>
-	<Thumbnail title="Điểm trung bình" value={average.toFixed(1)} />
+	<Thumbnail title="Điểm trung bình" value={average.toFixed(2)} />
 	<Thumbnail
 		title="Xếp loại"
 		value={result.pass ? rating(average, "A+") : "-"}
