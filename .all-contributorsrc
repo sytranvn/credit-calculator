@@ -9,7 +9,7 @@
   "types": {
     "owner": {
       "symbol": "👑",
-      "description": "Owner of the project",
+      "description": "Owner of the project"
     }
   },
   "contributorsPerLine": 7,
