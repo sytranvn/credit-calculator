@@ -40,7 +40,7 @@ Join our community and let's build a brighter future for education!
 <table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://sytranvn.dev"><img src="https://avatars.githubusercontent.com/u/13009812?v=4?s=100" width="100px;" alt="Sy Tran Dung"/><br /><sub><b>Sy Tran Dung</b></sub></a><br /><a href="#code-sytranvn" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://sytranvn.dev"><img src="https://avatars.githubusercontent.com/u/13009812?v=4?s=100" width="100px;" alt="Sy Tran Dung"/><br /><sub><b>Sy Tran Dung</b></sub></a><br /><a href="#code-sytranvn" title="Code">💻</a> <a href="#owner-sytranvn" title="Owner of the project">👑</a> <a href="#infra-sytranvn" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
     </tr>
   </tbody>
 </table>
