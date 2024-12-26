@@ -31,3 +31,15 @@ Join our community and let's build a brighter future for education!
 1. Push your changes to your forked repository's branch.
 1. On the original project's repository, create a pull request from your branch to the main branch (or the designated development branch).
 1. Write a concise and informative description of your contribution in the pull request. Explain the problem you solved, the approach you took, and any relevant considerations.
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
