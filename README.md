@@ -37,6 +37,13 @@ Join our community and let's build a brighter future for education!
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://sytranvn.dev"><img src="https://avatars.githubusercontent.com/u/13009812?v=4?s=100" width="100px;" alt="Sy Tran Dung"/><br /><sub><b>Sy Tran Dung</b></sub></a><br /><a href="#code-sytranvn" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
